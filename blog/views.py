@@ -18,6 +18,66 @@ def postDetails(request,post_id):
     context={'post':one_post}
     return render(request,'blog/post_details.html',context)
 
+# @login_required
+# def user_logout(request):
+#     logout(request)
+#     return HttpResponseRedirect(reverse('index'))
+
+
+# def user_login(request):
+#     if request.method == "POST":
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+
+#         user = authenticate(username=username, password=password)
+
+#         if user:
+#             if user.is_active:
+#                 login(request, user)
+#                 return HttpResponseRedirect(reverse('index'))
+
+#             else:
+#                 return HttpResponse("Account is not active")
+
+#         else:
+#             print("Some try to login and failed")
+#             print("Username: {} & password: {}".format(username,password))
+#             return HttpResponse("Invilide login details supplied")
+
+#     else:
+#         return render(request, 'blog/login.html',{})
+
+
+
+
+# @login_required
+# def special(request):
+#     return HttpResponse("You are loged in")
+
+
+
+#login page function
+# def login_user(request):
+# 	if request.method == 'POST':
+# 	    username = request.POST['username']
+# 		password = request.POST['password']
+# 		user = authenticate(request, username=username, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 return redirect('home')
+#             else:
+#                 messages.info(request, 'sorry you are blocked contact the admin')
+#                 return redirect('login')
+#     else:
+#         return render(request,'blog/login.html')
+
+
+
+
+
+
+
+
 #rest Framework views here.
 @api_view(['GET'])
 def api_all_users(request):
