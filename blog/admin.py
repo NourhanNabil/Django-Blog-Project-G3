@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Member, Post , Category , ForbiddenWord
+from .models import Member,  Post , Category , ForbiddenWord
 # Register your models here.
 
 class InlinePost(admin.StackedInline):
@@ -8,13 +8,13 @@ class InlinePost(admin.StackedInline):
 
 class MemberAdmin(admin.ModelAdmin):
     fieldsets=(
-        ["Member Information",{'fields':["first_name","last_name","age","email","phone_number","country"]}],
+        ["Member Information",{'fields':["first_name","last_name","email"]}],
     )
-    list_display=("first_name","last_name","age","email","phone_number","country")
-    list_filter=["first_name","age","country"]
-    search_fields=["first_name","age","country"]
+    list_display=("first_name","last_name","email")
+    list_filter=["first_name","last_name","email"]
+    search_fields=["first_name","last_name","email"]
     model=Post
-    inlines=[InlinePost]   
+    inlines=[InlinePost]
 
 class PostAdmin(admin.ModelAdmin):
     fieldsets=(

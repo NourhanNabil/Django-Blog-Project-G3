@@ -1,20 +1,24 @@
 {% extends 'blog/base.html'%}
 
 {% block title_block %}
-
-
-
-
-<h1>home</h1>
-<h1>home</h1>
-<h1>home</h1>
-<h1>home</h1>
-<h1>home</h1>
-<h1>home</h1>
-<h1>home</h1>
-<h1>home</h1>
-
-
+<h1>Post</h1>
+<h1>Post</h1>
+<h1>Post</h1>
+<h1>Post</h1>
+<h1>Post</h1>
 {% endblock %}
 {% block main_block %}
+<ul>
+    {% for post in posts %}
+           <li><a href="{% url 'post-details' post.id %}">{{post.Title}} - {{post.author}}</a> <br>
+            {{post.Content}}
+            {{post.Image}}
+           </li>
+        {% endfor %}
+</ul>
+<ul>
+    {% for category in categories %}
+    <li><a href="#">{{category.category}}</a><button><a href="#">Subscribe</a></button></li>
+    {% endfor %}
+</ul>
 {% endblock %}
