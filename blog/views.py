@@ -22,6 +22,12 @@ def postDetails(request, post_id):
     return render(request, "blog/post_details.html", context)
 
 
+def category_view(request,cats):
+    posts = Post.objects.filter(category=cats)
+    context={'category_posts':posts}
+    return render(request,'blog/categories.html',context)
+
+
 def register_view(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)

@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     path("", views.home, name="home"),
     path("post/<post_id>", views.postDetails, name="post-details"),
+    path("accounts/register/", views.register_view, name="register"),
+    path("category/<str:cats>/", views.category_view, name="category"),
     # path('login/', views.user_login, name='login'),
     # rest_framework URLs.
     # path('api-all', views.api_all_users, name='api-all'),
