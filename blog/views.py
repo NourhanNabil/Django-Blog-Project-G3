@@ -35,6 +35,12 @@ class UpdatePost(UpdateView):
     form_class=PostForm
     template_name='blog/update_post.html'
 
+def category_view(request,cats):
+    posts = Post.objects.filter(category=cats)
+    context={'category_posts':posts}
+    return render(request,'blog/categories.html',context)
+
+
 def register_view(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)

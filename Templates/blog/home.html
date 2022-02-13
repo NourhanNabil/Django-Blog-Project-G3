@@ -19,7 +19,7 @@
 </ul>
 <ul>
     {% for category in categories %}
-    <li><a href="#">{{category.category}}</a><button><a href="#">Subscribe</a></button></li>
+    <li><a href="{% url 'category' category.id %}">{{category.category}}</a><button><a href="#">Subscribe</a></button></li>
     {% endfor %}
 </ul>
 {% endblock %}
