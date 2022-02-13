@@ -13,7 +13,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     Title = models.CharField(max_length=255)
-    Image = models.ImageField(default ="image")
+    Image = models.ImageField(upload_to='img')
     Content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     tags = TaggableManager()

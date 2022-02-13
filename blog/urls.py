@@ -5,16 +5,11 @@ from .views import AddPost, UpdatePost
 urlpatterns = [
     path("", views.home, name="home"),
     path("post/<post_id>", views.postDetails, name="post-details"),
-<<<<<<< HEAD
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/register/", views.register_view, name="register"),
     path('add_post/', AddPost.as_view(), name='add-post'),
     path('post/edit/<int:pk>', UpdatePost.as_view(), name='update-post'),
-=======
-    path("accounts/register/", views.register_view, name="register"),
     path("category/<str:cats>/", views.category_view, name="category"),
-    # path('login/', views.user_login, name='login'),
->>>>>>> 8107301b33c05523a969c46e2787a159895cab7e
     # rest_framework URLs.
     # path('api-all', views.api_all_users, name='api-all'),
     # path('api-one/<user_id>', views.api_one_user, name='api-one'),
@@ -22,3 +17,4 @@ urlpatterns = [
     # path('api-edit/<user_id>', views.api_edit_user, name='api-edit'),
     # path('api-del/<user_id>', views.api_del_user, name='api-del')
 ]
+ 
