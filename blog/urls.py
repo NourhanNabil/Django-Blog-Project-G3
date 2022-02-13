@@ -1,6 +1,6 @@
 from django.urls import path,include
 from . import views
-from .views import AddPost, UpdatePost
+from .views import AddPost, UpdatePost , DeletePost
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -9,6 +9,7 @@ urlpatterns = [
     path("accounts/register/", views.register_view, name="register"),
     path('add_post/', AddPost.as_view(), name='add-post'),
     path('post/edit/<int:pk>', UpdatePost.as_view(), name='update-post'),
+    path('post/<int:pk>/remove', DeletePost.as_view(), name='delete-post'),
     path("category/<str:cats>/", views.category_view, name="category"),
     # rest_framework URLs.
     # path('api-all', views.api_all_users, name='api-all'),

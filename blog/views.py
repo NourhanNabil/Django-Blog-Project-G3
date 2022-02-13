@@ -6,7 +6,8 @@ from .models import Post, Category
 from .forms import NewUserForm , PostForm
 from django.contrib.auth import login
 from django.contrib import messages
-from django.views.generic import CreateView , UpdateView
+from django.views.generic import CreateView , UpdateView , DeleteView
+from django.urls import reverse_lazy
 
 def home(request):
     all_posts = Post.objects.all().order_by('-date')
@@ -35,7 +36,14 @@ class UpdatePost(UpdateView):
     form_class=PostForm
     template_name='blog/update_post.html'
 
+
+class DeletePost(DeleteView):
+    model=Post
+    template_name='blog/delete_post.html'
+    success_url = reverse_lazy('home')
+
 def category_view(request,cats):
+    all_posts = Post.objects.all().order_by('-date')
     posts = Post.objects.filter(category=cats)
     context={'category_posts':posts}
     return render(request,'blog/categories.html',context)
