@@ -1,26 +1,39 @@
+from dataclasses import field
 from django.shortcuts import render, redirect
 from .models import Post, Category
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
 # from .serializers import MemberSerializer
-from .forms import NewUserForm
+from .forms import NewUserForm , PostForm
 from django.contrib.auth import login
 from django.contrib import messages
-
+from django.views.generic import CreateView , UpdateView
 
 def home(request):
-    all_posts = Post.objects.all()
-    all_categories = Category.objects.all()
+    all_posts = Post.objects.all().order_by('-date')
+    all_categories = Category.objects.all().order_by('category')
     context = {"posts": all_posts, "categories": all_categories}
     return render(request, "blog/home.html", context)
-
 
 def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
     context = {"post": one_post}
     return render(request, "blog/post_details.html", context)
 
+def categoryPosts(request,category_id):
+    one_category=Category.objects.get(id=category_id)
+    context={'category':one_category}
+    return render(request,'blog/category_posts.html',context)
+
+class AddPost(CreateView):
+    model=Post
+    form_class=PostForm
+    template_name='blog/add_post.html'
+
+class UpdatePost(UpdateView):
+    model=Post
+    form_class=PostForm
+    template_name='blog/update_post.html'
 
 def register_view(request):
     if request.method == "POST":

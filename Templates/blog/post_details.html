@@ -1,6 +1,16 @@
-<h1>{{post.Title}}</h1>
-<small>By : {{post.author}}</small>
-<hr>
-{{post.Content}}
+{% extends 'blog/base.html'%}
 
-<button><a href="{% url 'home' %}">Back to Home </a></button>
+{% block title_block %}
+<title>{{post.Title}}</title>
+{% endblock %}
+{% block main_block %}
+<h1>{{post.Title}}</h1>
+<h1>{{post.Image}}</h1>
+<small>Posted By :{{post.author}}</small>
+<p>{{post.Content}}</p>
+<p>Category:{{post.category}}</p> 
+<p>Tags:{{post.tags}}</p>
+<p>Date:{{post.date}}</p>
+<li><a href="{% url 'update-post' post.id%}">Edit</a></li>
+<button class="btn btn-secondary "><a href="{% url 'home' %}" class="text-decoration-none text-light">Back to Home </a></button>
+{% endblock %}

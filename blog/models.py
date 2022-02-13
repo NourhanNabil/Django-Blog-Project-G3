@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from taggit.managers import TaggableManager
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -12,7 +13,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     Title = models.CharField(max_length=255)
-    Image = models.ImageField()
+    Image = models.ImageField(default ="image")
     Content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     tags = TaggableManager()
@@ -24,6 +25,8 @@ class Post(models.Model):
     def __str__(self):
         return self.Title + " by " + str(self.author)
 
+    def get_absolute_url(self):
+        return reverse('post-details' , args=(str(self.id)))
 
 class ForbiddenWord(models.Model):
     forbidden_word = models.CharField(max_length=50)
