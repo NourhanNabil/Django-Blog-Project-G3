@@ -1,26 +1,54 @@
 {% load static %}
 <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid"> 
-        <a href="{%url 'home' %}"><img src="{% static 'img/django-community-logo.png' %}" alt="djando-logo" class="ms-4" width="100em" height="60em"></a>    
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse offset-9" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'add-post' %}">Add Post</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'register' %}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/admin">Manage Blog</a>
-                </li>
-            </ul>
-        </div>
+  <div class="container-fluid">
+    <a href="{%url 'home' %}"
+      ><img
+        src="{% static 'img/django-community-logo.png' %}"
+        alt="djando-logo"
+        class="ms-4"
+        width="100em"
+        height="60em"
+    /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarScroll"
+      aria-controls="navbarScroll"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse offset-9" id="navbarScroll">
+      <ul
+        class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
+        style="--bs-scroll-height: 100px"
+      >
+        {% if user.is_authenticated %}
+
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'add-post' %}">Add Post</a>
+        </li>
+        <li class="nav-item">Welcome {{ user.get_username}}</li>
+        <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link active"
+            aria-current="page"
+            href="{% url 'login' %}?next={{request.path}}">Login</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'register' %}?next={{request.path}}">Register</a>
+        </li>
+        {% endif %} {% if user.is_authenticated and user.is_staff %}
+
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin">Manage Blog</a>
+        </li>
+        {% endif %}
+      </ul>
     </div>
+  </div>
 </nav>
