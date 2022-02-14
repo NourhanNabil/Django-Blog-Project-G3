@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Post
+from .models import Post , Comment
 
 
 class NewUserForm(UserCreationForm):
@@ -27,6 +27,15 @@ class PostForm(forms.ModelForm):
             'Image':forms.FileInput(attrs={'class':'form-control'}),
             'Content':forms.Textarea(attrs={'class':'form-control'}),
             'category':forms.Select(attrs={'class':'form-control'}),
-            'tags':forms.TextInput(attrs={'class':'form-control'}),  
-            'author':forms.Select(attrs={'class':'form-control'}),
+            'tags':forms.TextInput(attrs={'class':'form-control'}), 
+            'author':forms.TextInput(attrs={'class':'form-control','value' :"" , 'id':'author-id' , "type":"hidden"}), 
+        }   
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model=Comment
+        fields=("author","content")
+        widgets={
+            'author':forms.TextInput(attrs={'class':'form-control','value' :"" , 'id':'author-id' , "type":"hidden"}), 
+            'content':forms.Textarea(attrs={'class':'form-control'}),
         }

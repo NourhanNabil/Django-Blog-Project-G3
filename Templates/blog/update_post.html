@@ -4,18 +4,15 @@
 <title>Update Post</title>
 {% endblock %}
 {% block main_block %}
-{% if user.is_authenticated %}
 <br><br><br><br>
 <div class="form-group container">
     <h1>Update Post</h1>
     <br><br>
     <form method="POST">
         {% csrf_token %}
+        {{form.media}}
         {{ form.as_p }}
         <button type="submit" class="btn btn-secondary">Post</button>
     </form>
 </div>
-{% else %}
-You are not allowed here!
-{% endif %}
 {% endblock %}

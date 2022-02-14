@@ -1,0 +1,20 @@
+{% extends 'blog/base.html'%}
+{% load static %}
+{% block title_block %}
+<title>Comment On Post</title>
+{% endblock %}
+{% block main_block %}
+<h1>Add Comment</h1>
+<br><br>
+<div class="form-group container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-secondary">Add Comment</button>
+    </form>
+</div>
+<script>
+    var name = "{{user.id}}";
+    document.getElementById("author-id").value = name;
+</script>
+{% endblock %}

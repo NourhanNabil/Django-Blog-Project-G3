@@ -1,8 +1,9 @@
+
 from django.db import models
 from django.conf import settings
 from taggit.managers import TaggableManager
 from django.urls import reverse
-
+from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     category = models.CharField(max_length=50)
@@ -13,14 +14,20 @@ class Category(models.Model):
 
 class Post(models.Model):
     Title = models.CharField(max_length=255)
-    Image = models.ImageField(upload_to='img')
-    Content = models.TextField()
+    Image = models.ImageField(null=True , blank=True ,upload_to="blog/static/img/")
+    Content = RichTextField(blank=True , null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     tags = TaggableManager()
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False
     )
     date = models.DateTimeField(auto_now_add=True, null=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='blog_posts')
+
+
+    # like post
+    def total_likes(self):
+        return self.likes.count()
 
     def __str__(self):
         return self.Title + " by " + str(self.author)
@@ -59,7 +66,11 @@ class Comment(models.Model):
         auto_now_add=True, verbose_name="created at", blank=True, null=False
     )
 
+    def __str__(self):
+        return '%s - %s' % (self.post.Title, self.author)
 
+ 
+        
 class Reply(models.Model):
     comment = models.ForeignKey(
         Comment,

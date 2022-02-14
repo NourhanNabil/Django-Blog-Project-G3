@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, ForbiddenWord
+from .models import Post, Category, ForbiddenWord , Comment
 
 
 class InlinePost(admin.StackedInline):
@@ -11,7 +11,7 @@ class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         [
             "Post Information",
-            {"fields": ["Title", "Image", "Content", "category", "tags", "author"]},
+            {"fields": ["Title", "Image", "Content", "category", "tags", "author", 'likes']},
         ],
     )
     list_display = ("Title", "author", "category", "date")
@@ -38,3 +38,4 @@ class ForbiddenWordAdmin(admin.ModelAdmin):
 admin.site.register(Post, PostAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(ForbiddenWord, ForbiddenWordAdmin)
+admin.site.register(Comment)
