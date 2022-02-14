@@ -1,12 +1,19 @@
+<<<<<<< HEAD
 from django.shortcuts import render, redirect
 from .models import Post, Category , Comment
+=======
+>>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, Category
 
 # from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 # from .serializers import MemberSerializer
+<<<<<<< HEAD
 from .forms import NewUserForm, PostForm , CommentForm
+=======
+from .forms import NewUserForm, PostForm
+>>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -30,6 +37,14 @@ def postDetails(request, post_id):
     context = {"post": one_post}
     return render(request, "blog/post_details.html", context)
 
+<<<<<<< HEAD
+=======
+
+def categoryPosts(request, category_id):
+    one_category = Category.objects.get(id=category_id)
+    context = {"category": one_category}
+    return render(request, "blog/category_posts.html", context)
+>>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02
 def postDetails(request,post_id):
     one_post=Post.objects.get(id=post_id)
     total_likes = one_post.total_likes()
@@ -46,6 +61,7 @@ class AddPost(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = "blog/add_post.html"
+<<<<<<< HEAD
 
 
 class UpdatePost(LoginRequiredMixin, UpdateView):
@@ -73,6 +89,25 @@ class AddComment(LoginRequiredMixin, CreateView):
 
 def category_view(request, cats):
     posts = Post.objects.filter(category=cats).order_by("-date")
+=======
+
+
+class UpdatePost(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = "blog/update_post.html"
+
+
+class DeletePost(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = "blog/delete_post.html"
+    success_url = reverse_lazy("home")
+
+
+def category_view(request, cats):
+    all_posts = Post.objects.all().order_by("-date")
+    posts = Post.objects.filter(category=cats)
+>>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02
     context = {"category_posts": posts}
     return render(request, "blog/categories.html", context)
 
@@ -146,3 +181,10 @@ def LikeView(request, pk):
 #     user = Member.objects.get(id=user_id)
 #     user.delete()
 #     return Response("User Deleted successfully!")
+<<<<<<< HEAD
+=======
+
+# def logout(request):
+#     auth.logout(request)
+#     return redirect('home_url')
+>>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02

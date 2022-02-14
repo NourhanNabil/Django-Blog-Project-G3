@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'blog/base.html'%}
 {% load static %}
 {% block title_block %}
@@ -9,6 +10,12 @@
 {% if post.Image %}
     <img src="{% static post.Image %}" alt="">
 {% endif %}
+=======
+{% extends 'blog/base.html'%} {% block title_block %}
+<title>{{post.Title}}</title>
+{% endblock %} {% block main_block %}
+<h1>{{post.Title}}</h1>
+>>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02
 <!-- likes button -->
 <br />
 <br />
@@ -45,6 +52,10 @@
 <br />
 <br />
 <!-- end of likes button -->
+<<<<<<< HEAD
+=======
+<img src="{{ post.Image }}" />
+>>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02
 <small>Posted By :{{post.author}}</small>
 <p>{{post.Content|safe}}</p>
 <p>Category:{{post.category}}</p> 
@@ -57,6 +68,7 @@
   {% endif %}
 {% endif %}
 <button class="btn btn-secondary "><a href="{% url 'home' %}" class="text-decoration-none text-light">Back to Home </a></button>
+<<<<<<< HEAD
 <hr>
 <h2>Comments</h2>
 <br>
@@ -74,3 +86,7 @@
 {% endif %}
 {% endblock %}
 
+=======
+
+{% endblock %}
+>>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02
