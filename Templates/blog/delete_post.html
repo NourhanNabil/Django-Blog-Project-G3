@@ -4,6 +4,7 @@
 <title>Delete Post</title>
 {% endblock %}
 {% block main_block %}
+{% if user.is_authenticated %}
 <h3>Delete: {{ post.title }}</h3>
 <br><br><br><br>
 <div class="form-group container">
@@ -16,5 +17,12 @@
         <button type="submit" class="btn btn-secondary">Delete Post!</button>
     </form>
 </div>
+<<<<<<< HEAD
 {% endblock %}
 {% include 'blog/footer.html'%}
+=======
+{% else %}
+You are not allowed here!
+{% endif %}
+{% endblock %}
+>>>>>>> 5b2edd39f7bec0618946b2a617160401a221b72b
