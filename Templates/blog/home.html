@@ -9,15 +9,6 @@
 <!-- <ul>
     {% for post in posts %}
             <img src="{{post.Image}}">
-<<<<<<< HEAD
-=======
-            <li>{{ post.Content|slice:":100"|safe }}</li> 
-            <li>category:{{post.category}}</li>
-            <li>tags:{{post.tags}}</li>
-            <li>Date:{{post.date}}</li>
-            {% if user.is_authenticated %}
-                {% if user.id == post.author.id or user.is_staff %}
->>>>>>> 5b2edd39f7bec0618946b2a617160401a221b72b
             <li><a href="{% url 'update-post' post.id%}">Edit</a></li>
             <li><a href="{% url 'delete-post' post.id%}">Delete</a></li>
                 {% endif %}
