@@ -1,10 +1,6 @@
 from django.urls import path,include
 from . import views
-<<<<<<< HEAD
 from .views import AddPost, UpdatePost , DeletePost , AddComment
-=======
->>>>>>> c73fa93995d15cab93d8a239c77ebeb1e7c99d02
-from .views import AddPost, UpdatePost , DeletePost
 from .views import AddPost, UpdatePost, LikeView
 
 urlpatterns = [
