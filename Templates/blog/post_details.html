@@ -1,6 +1,16 @@
+{% extends 'blog/base.html'%}
+{% include 'blog/header.html'%}
+
+
+{% include 'blog/footer.html'%}
+{% block title_block %}
+
 <h1>{{post.Title}}</h1>
 <small>By : {{post.author}}</small>
 <hr>
+{% endblock %}
 {{post.Content}}
+{% block main_block %}
 
 <button><a href="{% url 'home' %}">Back to Home </a></button>
+{% endblock %}

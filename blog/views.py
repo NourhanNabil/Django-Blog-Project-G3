@@ -76,3 +76,7 @@ def register_view(request):
 #     user = Member.objects.get(id=user_id)
 #     user.delete()
 #     return Response("User Deleted successfully!")
+
+# def logout(request):
+#     auth.logout(request)
+#     return redirect('home_url')

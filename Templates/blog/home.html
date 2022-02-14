@@ -1,16 +1,53 @@
 {% extends 'blog/base.html'%}
 
 {% block title_block %}
-<h1>Post</h1>
-<h1>Post</h1>
-<h1>Post</h1>
-<h1>Post</h1>
-<h1>Post</h1>
+<h1>Posts</h1>
+
 {% endblock %}
 {% block main_block %}
+<div class="container">
 <ul>
     {% for post in posts %}
            <li><a href="{% url 'post-details' post.id %}">{{post.Title}} - {{post.author}}</a> <br>
+            {{post.Content}}
+            {{post.Image}}
+           </li>
+        {% endfor %}
+</ul>
+<ul>
+    {% for post in posts %}
+    <div class="card gedf-card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="mr-2">
+                        <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                    </div>
+                    <div class="ml-2">
+                        <div class="h5 m-0"> @{{post.author}}</div>
+                        <div class="h7 text-muted">
+                            <span>{{post.tags}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>{{post.date}}</div>
+            <a class="card-link" href="{% url 'post-details' post.id %}">
+                <h5 class="card-title">{{post.Title}}</h5>
+            </a>
+
+            <p class="card-text">{{post.Content}}</p>
+            <img src="/home/sohyb/blog-project/Django-Blog-Project/blog/static/img/django-community-logo.png" width="250" alt="">
+            <p class="card-text">{{post.Image.url}}</p>
+        </div>
+        <div class="card-footer">
+            <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+            <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+        </div>
+    </div>
+           <li><a >{{post.Title}} - {{post.author}}</a> <br>
             {{post.Content}}
             {{post.Image}}
            </li>
@@ -21,4 +58,5 @@
     <li><a href="#">{{category.category}}</a><button><a href="#">Subscribe</a></button></li>
     {% endfor %}
 </ul>
+</div>
 {% endblock %}
