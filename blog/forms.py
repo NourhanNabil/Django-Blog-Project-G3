@@ -26,7 +26,7 @@ class PostForm(forms.ModelForm):
             'Title':forms.TextInput(attrs={'class':'form-control'}),
             'Image':forms.FileInput(attrs={'class':'form-control'}),
             'Content':forms.Textarea(attrs={'class':'form-control'}),
-            'category':forms.TextInput(attrs={'class':'form-control'}),
+            'category':forms.Select(attrs={'class':'form-control'}),
             'tags':forms.TextInput(attrs={'class':'form-control'}),  
             'author':forms.Select(attrs={'class':'form-control'}),
         }

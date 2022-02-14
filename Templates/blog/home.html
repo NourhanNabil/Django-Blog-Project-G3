@@ -10,7 +10,7 @@
     {% for post in posts %}
            <li><a href="{% url 'post-details' post.id %}" >{{post.Title}} </a>by {{post.author}}</li>
             <img src="{{post.Image}}">
-            <li>{{ post.Content|slice:":100" }}</li> 
+            <li>{{ post.Content|slice:":100"|safe }}</li> 
             <li>category:{{post.category}}</li>
             <li>tags:{{post.tags}}</li>
             <li>Date:{{post.date}}</li>

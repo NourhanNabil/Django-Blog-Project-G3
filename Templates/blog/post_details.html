@@ -7,7 +7,7 @@
 <h1>{{post.Title}}</h1>
 <img src="{{ post.Image }}" >
 <small>Posted By :{{post.author}}</small>
-<p>{{post.Content}}</p>
+<p>{{post.Content|safe}}</p>
 <p>Category:{{post.category}}</p> 
 <p>Tags:{{post.tags}}</p>
 <p>Date:{{post.date}}</p>
