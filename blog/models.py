@@ -1,3 +1,4 @@
+from operator import mod
 from django.db import models
 from django.conf import settings
 from taggit.managers import TaggableManager
@@ -21,6 +22,12 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False
     )
     date = models.DateTimeField(auto_now_add=True, null=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='blog_posts')
+
+
+    # like post
+    def total_likes(self):
+        return self.likes.count()
 
     def __str__(self):
         return self.Title + " by " + str(self.author)
