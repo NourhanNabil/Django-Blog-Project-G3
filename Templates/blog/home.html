@@ -1,5 +1,4 @@
 {% extends 'blog/base.html'%}
-{% load static %}
 {% block title_block %}
 <h1 style="text-align: center;">Top Posts</h1>
 {% endblock %}
@@ -36,7 +35,7 @@
         <div class="card-body">
             <p class="card-text">{{post.Content|slice:":200"|safe}}</p>
             <span><a class="card-link" href="{% url 'post-details' post.id %}">Read More</a></span>
-            <img src="{{post.Image.url}}" width="250" alt="">
+            <img src="{{ post.Image.url }}" width="250" alt="">
         </div>
         <div class="card-footer">
             {% if user.is_authenticated %}

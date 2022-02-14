@@ -1,14 +1,11 @@
 {% extends 'blog/base.html'%}
-{% load static %}
 {% block title_block %}
 <title>{{post.Title}}</title>
 {% endblock %}
 {% block main_block %}
 <br> <br><br><br>
 <h1>{{post.Title}}</h1>
-{% if post.Image %}
-    <img src="{% static post.Image %}" alt="">
-{% endif %}
+    <img src="{{post.Image.url}}" alt="">
 <!-- likes button -->
 <br />
 <br />

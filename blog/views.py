@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Post, Category , Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, Category
+import os 
 # from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 # from .serializers import MemberSerializer
@@ -9,7 +10,6 @@ from .forms import NewUserForm, PostForm , CommentForm
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView , UpdateView
 # like post
@@ -18,7 +18,7 @@ from django.urls import reverse_lazy, reverse
 
 def home(request):
     all_posts = Post.objects.all().order_by("-date")
-    all_categories = Category.objects.all().order_by("category")
+    all_categories = Category.objects.all().order_by("category")   
     context = {"posts": all_posts, "categories": all_categories}
     return render(request, "blog/home.html", context)
 
@@ -27,30 +27,18 @@ def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
     context = {"post": one_post}
     return render(request, "blog/post_details.html", context)
-
-def postDetails(request,post_id):
-    one_post=Post.objects.get(id=post_id)
-    total_likes = one_post.total_likes()
-
-    liked = False
-    if one_post.likes.filter(id = request.user.id).exists():
-        liked = True
-
-    context={'post':one_post, 'total_likes':total_likes, 'liked': liked}
-    return render(request,'blog/post_details.html',context)
-
+    
 
 class AddPost(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = "blog/add_post.html"
 
-
 class UpdatePost(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = "blog/update_post.html"
-
+    
 
 class DeletePost(LoginRequiredMixin, DeleteView):
     model = Post
@@ -62,7 +50,6 @@ class AddComment(LoginRequiredMixin, CreateView):
     model = Comment
     form_class = CommentForm
     template_name = "blog/add_comment.html"
-    success_url = reverse_lazy("home")
 
     def form_valid(self,form):
         form.instance.post_id=self.kwargs['pk']

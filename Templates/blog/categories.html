@@ -1,13 +1,13 @@
 {% extends 'blog/base.html'%}
 {% load static %}
 {% block title_block %}
-<h1>cats</h1>
+<h1>Posts</h1>
 <ul>
 {% for post in category_posts %}
           <li><a href="{% url 'post-details' post.id %}">{{post.Title}} </a>by {{post.author}}</li>
           <li>{{ post.category }}</li>
             {{post.Content}}
-            <img src="{% static post.Image %}" alt="">
+            <img src="{{post.Image.url}}" alt="">
            </li>
         {% if user.is_authenticated %}
           {% if user.id == post.author.id or user.is_staff %}
