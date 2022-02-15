@@ -1,8 +1,5 @@
 from .models import Post, Category , Comment
 from django.shortcuts import render, redirect, get_object_or_404
-# from rest_framework.response import Response
-# from rest_framework.decorators import api_view
-# from .serializers import MemberSerializer
 from django.contrib.auth.models import User
 from .forms import NewUserForm, PostForm , CommentForm ,CategoryForm
 from django.contrib.auth import login
@@ -99,46 +96,6 @@ def search_bar(request):
         return render(request,
         'blog/search_bar.html',{})
 
-
-
-
-# # rest Framework views here.
-# @api_view(["GET"])
-# def api_all_users(request):
-#     all_users = Member.objects.all()
-#     user_ser = MemberSerializer(all_users, many=True)
-#     return Response(user_ser.data)
-
-
-# @api_view(["GET"])
-# def api_one_user(request, user_id):
-#     user = Member.objects.get(id=user_id)
-#     user_ser = MemberSerializer(user, many=False)
-#     return Response(user_ser.data)
-
-
-# @api_view(["POST"])
-# def api_add_user(request):
-#     user_ser = MemberSerializer(data=request.data)
-#     if user_ser.is_valid():
-#         user_ser.save()
-#         return redirect("api-all")
-
-
-# @api_view(["POST"])
-# def api_edit_user(request, user_id):
-#     user = Member.objects.get(id=user_id)
-#     user_ser = MemberSerializer(data=request.data, instance=user)
-#     if user_ser.is_valid():
-#         user_ser.save()
-#         return redirect("api-all")
-
-
-# @api_view(["DELETE"])
-# def api_del_user(request, user_id):
-#     user = Member.objects.get(id=user_id)
-#     user.delete()
-#     return Response("User Deleted successfully!")
 
 def AdminPage(request):
     return render(request, "admin-pages/admin_all.html")
