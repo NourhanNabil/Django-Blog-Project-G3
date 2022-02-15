@@ -1,7 +1,11 @@
-{% extends 'blog/base.html'%} {% block title_block %}
+{% extends 'blog/base.html'%}
+{% block title_block %}
 <title>{{post.Title}}</title>
-{% endblock %} {% block main_block %}
+{% endblock %}
+{% block main_block %}
+<br> <br><br><br>
 <h1>{{post.Title}}</h1>
+    <img src="{{post.Image.url}}" alt="">
 <!-- likes button -->
 <br />
 <br />
@@ -38,7 +42,6 @@
 <br />
 <br />
 <!-- end of likes button -->
-<img src="{{ post.Image }}" />
 <small>Posted By :{{post.author}}</small>
 <p>{{post.Content|safe}}</p>
 <p>Category:{{post.category}}</p> 
@@ -51,5 +54,20 @@
   {% endif %}
 {% endif %}
 <button class="btn btn-secondary "><a href="{% url 'home' %}" class="text-decoration-none text-light">Back to Home </a></button>
-
+<hr>
+<h2>Comments</h2>
+<br>
+{% if not post.comments.all %} 
+<p>No Comments Yet <a href="{% url 'add-comment' post.id %}">Add Comment</a> </p> 
+{% else %}
+<br><br>
+{% for comment in post.comments.all %}
+<strong>{{comment.author}} -{{comment.created_at}}</strong>  
+<br>
+{{comment.content}}
+<hr>
+{% endfor %}
+<a href="{% url 'add-comment' post.id %}">Add Comment</a>
+{% endif %}
 {% endblock %}
+

@@ -1,9 +1,8 @@
-
 from django.db import models
 from django.conf import settings
 from taggit.managers import TaggableManager
-from django.urls import reverse
-
+from django.urls import reverse, reverse_lazy
+from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     category = models.CharField(max_length=50)
@@ -14,8 +13,8 @@ class Category(models.Model):
 
 class Post(models.Model):
     Title = models.CharField(max_length=255)
-    Image = models.ImageField(upload_to='img')
-    Content = models.TextField()
+    Image = models.ImageField(null=True , blank=True ,upload_to="images/")
+    Content = RichTextField(blank=True , null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     tags = TaggableManager()
     author = models.ForeignKey(
@@ -33,7 +32,8 @@ class Post(models.Model):
         return self.Title + " by " + str(self.author)
 
     def get_absolute_url(self):
-        return reverse('post-details' , args=(str(self.id)))
+        return reverse('post-details', args=[str(self.pk)])
+ 
 
 class ForbiddenWord(models.Model):
     forbidden_word = models.CharField(max_length=50)
@@ -66,7 +66,12 @@ class Comment(models.Model):
         auto_now_add=True, verbose_name="created at", blank=True, null=False
     )
 
+    def __str__(self):
+        return '%s - %s' % (self.post.Title, self.author)
 
+    def get_absolute_url(self):
+        return reverse('post-details',  args=[str(self.post.pk)])
+        
 class Reply(models.Model):
     comment = models.ForeignKey(
         Comment,

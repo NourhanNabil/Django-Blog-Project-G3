@@ -1,16 +1,16 @@
+from django.shortcuts import render, redirect
+from .models import Post, Category , Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, Category
-
+import os 
 # from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 # from .serializers import MemberSerializer
-from .forms import NewUserForm, PostForm
+from .forms import NewUserForm, PostForm , CommentForm
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.views.generic import CreateView , UpdateView
 # like post
 from django.http import HttpResponseRedirect
@@ -18,7 +18,7 @@ from django.urls import reverse_lazy, reverse
 
 def home(request):
     all_posts = Post.objects.all().order_by("-date")
-    all_categories = Category.objects.all().order_by("category")
+    all_categories = Category.objects.all().order_by("category")   
     context = {"posts": all_posts, "categories": all_categories}
     return render(request, "blog/home.html", context)
 
@@ -27,35 +27,18 @@ def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
     context = {"post": one_post}
     return render(request, "blog/post_details.html", context)
-
-
-def categoryPosts(request, category_id):
-    one_category = Category.objects.get(id=category_id)
-    context = {"category": one_category}
-    return render(request, "blog/category_posts.html", context)
-def postDetails(request,post_id):
-    one_post=Post.objects.get(id=post_id)
-    total_likes = one_post.total_likes()
-
-    liked = False
-    if one_post.likes.filter(id = request.user.id).exists():
-        liked = True
-
-    context={'post':one_post, 'total_likes':total_likes, 'liked': liked}
-    return render(request,'blog/post_details.html',context)
-
+    
 
 class AddPost(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = "blog/add_post.html"
 
-
 class UpdatePost(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = "blog/update_post.html"
-
+    
 
 class DeletePost(LoginRequiredMixin, DeleteView):
     model = Post
@@ -63,9 +46,18 @@ class DeletePost(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("home")
 
 
+class AddComment(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "blog/add_comment.html"
+
+    def form_valid(self,form):
+        form.instance.post_id=self.kwargs['pk']
+        return super().form_valid(form)
+
+
 def category_view(request, cats):
-    all_posts = Post.objects.all().order_by("-date")
-    posts = Post.objects.filter(category=cats)
+    posts = Post.objects.filter(category=cats).order_by("-date")
     context = {"category_posts": posts}
     return render(request, "blog/categories.html", context)
 
@@ -103,7 +95,7 @@ def LikeView(request, pk):
 def search_bar(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        result = Posts.objects.filter(name_contains=searched)
+        result = Post.objects.filter(name__contains=searched)
         return render(request,
         'blog/search_bar.html',{'searched':searched,'result':result})
     else:
@@ -146,7 +138,3 @@ def search_bar(request):
 #     user = Member.objects.get(id=user_id)
 #     user.delete()
 #     return Response("User Deleted successfully!")
-
-# def logout(request):
-#     auth.logout(request)
-#     return redirect('home_url')

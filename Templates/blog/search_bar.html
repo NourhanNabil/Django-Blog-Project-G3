@@ -5,7 +5,7 @@
         {% if searched %}
             <h1>You Searched For {{ searched }}</h1>
             <br/>
-            {% for pst in posts %}
+            {% for i in results %}
               <a href="{% url 'post-details' post.id %}"></a>  {{ post.Title }} - {{ post.tags }}</a></br>
             {% endfor %}
         {% else %}
