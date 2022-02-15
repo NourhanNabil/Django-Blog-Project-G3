@@ -10,12 +10,8 @@
             {{post.Content}}
             <img src="{{post.Image.url}}" alt="">
            </li>
-        {% if user.is_authenticated %}
-          {% if user.id == post.author.id or user.is_staff %}
            <li><a href="{% url 'update-post' post.id%}">Edit</a></li>
            <li><a href="{% url 'delete-post' post.id%}">Delete</a></li>
-          {% endif %}
-        {% endif %}
-{% endfor %}
+        {% endfor %}
 </ul>
 {% endblock %}

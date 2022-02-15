@@ -2,6 +2,19 @@
 {% block main_block %}
 <h1 style="text-align: center;">Top Posts</h1>
 <div class="container ">
+<!-- <ul>
+    {% for post in posts %}
+            <img src="{{post.Image}}">
+            <li><a href="{% url 'update-post' post.id%}">Edit</a></li>
+            <li><a href="{% url 'delete-post' post.id%}">Delete</a></li>
+                {% endif %}
+            {% endif %}
+           <li><a href="{% url 'post-details' post.id %}">{{post.Title}} - {{post.author}}</a> <br>
+            {{post.Content}}
+            <img src="{{post.Image}}" alt="{{post.Image}}">
+           </li>
+        {% endfor %}
+</ul> -->
 <ul>
     {% for post in posts %}
     <div class="card gedf-card mb-3">

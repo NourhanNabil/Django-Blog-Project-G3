@@ -1,17 +1,12 @@
-from .models import Post, Category, Comment
+from sre_constants import SUCCESS
+from django.shortcuts import render, redirect
+from .models import Post, Category , Comment
 from django.shortcuts import render, redirect, get_object_or_404
 
 # from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 # from .serializers import MemberSerializer
-from django.contrib.auth.models import User
-from .forms import (
-    NewUserForm,
-    PostForm,
-    CommentForm,
-    CategoryForm,
-    UserAdminPromoteForm,
-)
+from .forms import NewUserForm, PostForm , CommentForm
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -33,6 +28,22 @@ def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
     context = {"post": one_post}
     return render(request, "blog/post_details.html", context)
+
+
+def categoryPosts(request, category_id):
+    one_category = Category.objects.get(id=category_id)
+    context = {"category": one_category}
+    return render(request, "blog/category_posts.html", context)
+def postDetails(request,post_id):
+    one_post=Post.objects.get(id=post_id)
+    total_likes = one_post.total_likes()
+
+    liked = False
+    if one_post.likes.filter(id = request.user.id).exists():
+        liked = True
+
+    context={'post':one_post, 'total_likes':total_likes, 'liked': liked}
+    return render(request,'blog/post_details.html',context)
 
 
 class AddPost(LoginRequiredMixin, CreateView):
@@ -61,7 +72,6 @@ class AddComment(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.post_id = self.kwargs["pk"]
         return super().form_valid(form)
-
 
 def category_view(request, cats):
     posts = Post.objects.filter(category=cats).order_by("-date")
@@ -149,60 +159,6 @@ def search_bar(request):
 #     user.delete()
 #     return Response("User Deleted successfully!")
 
-
-def AdminPage(request):
-    return render(request, "admin-pages/admin_all.html")
-
-
-def ManageUsers(request):
-    users = User.objects.all().order_by("-date_joined")
-    context = {"users": users}
-    return render(request, "admin-pages/admin_users.html", context)
-
-
-def ManagePosts(request):
-    posts = Post.objects.all().order_by("-date")
-    context = {"posts": posts}
-    return render(request, "admin-pages/admin_posts.html", context)
-
-
-def ManageCategories(request):
-    all_categories = Category.objects.all().order_by("-date")
-    context = {"all_categories": all_categories}
-    return render(request, "admin-pages/admin_categories.html", context)
-
-
-def ManageWords(request):
-    return render(request, "admin-pages/admin_words.html")
-
-
-class AddCategory(LoginRequiredMixin, CreateView):
-    model = Category
-    form_class = CategoryForm
-    template_name = "admin-pages/add_category.html"
-    success_url = reverse_lazy("manage-Categories")
-
-
-class UpdateCategory(LoginRequiredMixin, UpdateView):
-    model = Category
-    form_class = CategoryForm
-    template_name = "admin-pages/update_category.html"
-    success_url = reverse_lazy("manage-Categories")
-
-
-class DeleteCategory(LoginRequiredMixin, DeleteView):
-    model = Category
-    template_name = "admin-pages/delete_category.html"
-    success_url = reverse_lazy("manage-Categories")
-
-
-def promote_user_view(request):
-    if request.method == "POST":
-        form = UserAdminPromoteForm(request.POST)
-        print(form.data)
-        if form.is_valid():
-            user = User.objects.get(pk=form.cleaned_data["user"])
-            user.is_staff = True
-            user.save()
-            return redirect("manage-users")
-    return HttpResponse("", status=403)
+# def logout(request):
+#     auth.logout(request)
+#     return redirect('home_url')

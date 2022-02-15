@@ -1,17 +1,7 @@
 from django.urls import path, include
 from . import views
-from .views import (
-    AddPost,
-    UpdatePost,
-    DeletePost,
-    AddComment,
-    AddCategory,
-    UpdateCategory,
-    DeleteCategory,
-)
-from .views import AddPost, UpdatePost, LikeView
-from django.conf import settings
-from django.conf.urls.static import static
+from .views import AddPost, UpdatePost , DeletePost
+from .views import AddPost, UpdatePost, LikeView, AddComment
 
 urlpatterns = [
     path("", views.home, name="home"),
