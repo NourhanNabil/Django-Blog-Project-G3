@@ -1,17 +1,14 @@
-from django.shortcuts import render, redirect
 from .models import Post, Category , Comment
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post, Category
-import os 
 # from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 # from .serializers import MemberSerializer
+from django.contrib.auth.models import User
 from .forms import NewUserForm, PostForm , CommentForm
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView , UpdateView
 # like post
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
@@ -131,3 +128,25 @@ def LikeView(request, pk):
 #     user = Member.objects.get(id=user_id)
 #     user.delete()
 #     return Response("User Deleted successfully!")
+
+def AdminPage(request):
+    return render(request, "admin-pages/admin_all.html")
+
+def ManageUsers(request):
+    users=User.objects.all().order_by("-date_joined")
+    context={'users':users}
+    return render(request, "admin-pages/admin_users.html",context)
+
+def ManagePosts(request):
+    posts = Post.objects.all().order_by("-date")
+    context={'posts':posts}
+    return render(request, "admin-pages/admin_posts.html",context)
+
+def ManageCategories(request):
+    all_categories = Category.objects.all().order_by("-date") 
+    context={'all_categories':all_categories}
+    return render(request, "admin-pages/admin_categories.html",context)
+
+def ManageWords(request):
+    return render(request, "admin-pages/admin_words.html")
+

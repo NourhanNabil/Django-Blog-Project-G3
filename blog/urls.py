@@ -14,6 +14,11 @@ urlpatterns = [
     path('post/<int:pk>/remove', DeletePost.as_view(), name='delete-post'),
     path("category/<str:cats>/", views.category_view, name="category"),
     path('post/<int:pk>/comment', AddComment.as_view(), name='add-comment'),
+    path('manage-blog', views.AdminPage, name="manage-blog"),
+    path('manage-blog/users', views.ManageUsers, name="manage-users"),
+    path('manage-blog/posts', views.ManagePosts, name="manage-posts"),
+    path('manage-blog/Categories', views.ManageCategories, name="manage-Categories"),
+    path('manage-blog/forbidden-words', views.ManageWords, name="manage-forbidden-words"),
 
     # rest_framework URLs.
     # path('api-all', views.api_all_users, name='api-all'),

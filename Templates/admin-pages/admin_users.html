@@ -1,0 +1,56 @@
+{% extends '../blog/base.html'%}
+
+{% block title_block %}
+<title>Manage Users</title>
+{% endblock %}
+{% block main_block %}
+<table class="table caption-top">
+    <caption class="fw-bold fs-5">List of Users</caption>
+    <thead>
+        <tr>
+            <th class="text-uppercase" scope="col">Id</th>
+            <th class="text-uppercase" scope="col">Username</th>
+            <th class="text-uppercase" scope="col">Email</th>
+            <th class="text-uppercase" scope="col">Date Joined</th>
+            <th class="text-uppercase" scope="col">Staff Status</th>
+            <th class="text-uppercase" scope="col">lock/unlock</th>
+            <th class="text-uppercase" scope="col">Edit</th>
+            <th class="text-uppercase" scope="col">Delete</th>
+            <th class="text-uppercase" scope="col">promote</th>
+        </tr>
+    </thead>
+    {% for user in users %}
+    <tbody>
+        {% if user.is_staff %}
+        <tr class="table-danger">
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.date_joined}}</td>
+            <td><i class="fa-solid fa-circle-check ">True</i></td>
+            <td>No Permission</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        {% else %}
+        <tr>
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.date_joined}}</td>
+            <td><i class="fa-solid fa-circle-xmark">False</i></td>
+            <td><button class="btn btn-primary">Lock</button></td>
+            <td><button class="btn btn-primary">Edit</button></td>
+            <td><button class="btn btn-danger">Delete</button></td>
+            <td><button class="btn btn-primary">Admin</button></td>
+        {% endif %}
+        </tr>
+    </tbody>  
+     {% endfor %}
+</table>
+<div class="d-flex justify-content-end me-5">
+    <button class="btn btn-secondary">Add User</button>
+</div>
+{% endblock %}
+
+  

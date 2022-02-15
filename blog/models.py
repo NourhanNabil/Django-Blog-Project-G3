@@ -4,16 +4,17 @@ from taggit.managers import TaggableManager
 from django.urls import reverse, reverse_lazy
 from ckeditor.fields import RichTextField
 
+
 class Category(models.Model):
     category = models.CharField(max_length=50)
-    
+    date = models.DateField(auto_now_add=True, null=True)
     def __str__(self):
         return self.category
 
 
 class Post(models.Model):
     Title = models.CharField(max_length=255)
-    Image = models.ImageField(null=True , blank=True ,upload_to="images/")
+    Image = models.ImageField(null=True,upload_to="images/")
     Content = RichTextField(blank=True , null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     tags = TaggableManager()
