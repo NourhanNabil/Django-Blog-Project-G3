@@ -12,6 +12,7 @@ urlpatterns = [
     path('post/edit/<int:pk>', UpdatePost.as_view(), name='update-post'),
     path('post/<int:pk>/remove', DeletePost.as_view(), name='delete-post'),
     path("category/<str:cats>/", views.category_view, name="category"),
+    path("search_bar", views.search_bar, name="search-bar"),
     # rest_framework URLs.
     # path('api-all', views.api_all_users, name='api-all'),
     # path('api-one/<user_id>', views.api_one_user, name='api-one'),

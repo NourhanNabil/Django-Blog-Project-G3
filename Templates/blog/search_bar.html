@@ -1,0 +1,16 @@
+{% extends 'blog/base.html'%}
+
+{% block title_block %}
+    <center>
+        {% if searched %}
+            <h1>You Searched For {{ searched }}</h1>
+            <br/>
+            {% for pst in posts %}
+              <a href="{% url 'post-details' post.id %}"></a>  {{ post.Title }} - {{ post.tags }}</a></br>
+            {% endfor %}
+        {% else %}
+        <h1>You forgot to search</h1>
+        {% endif %}
+    </center>
+
+{% endblock %}

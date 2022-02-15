@@ -100,8 +100,15 @@ def LikeView(request, pk):
         liked = True
     return HttpResponseRedirect(reverse('post-details', args=[str(pk)]))
 
-
-
+def search_bar(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        result = Posts.objects.filter(name_contains=searched)
+        return render(request,
+        'blog/search_bar.html',{'searched':searched,'result':result})
+    else:
+        return render(request,
+        'blog/search_bar.html',{})
 # # rest Framework views here.
 # @api_view(["GET"])
 # def api_all_users(request):
