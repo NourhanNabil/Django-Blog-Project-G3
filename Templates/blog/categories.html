@@ -1,6 +1,7 @@
 {% extends 'blog/base.html'%}
 {% load static %}
-{% block title_block %}
+{% block title_block %}<title>Categories</title>{% endblock %}
+{% block main_block %}
 <h1>Posts</h1>
 <ul>
 {% for post in category_posts %}

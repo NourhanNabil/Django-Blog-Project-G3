@@ -7,24 +7,15 @@ from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     category = models.CharField(max_length=50)
-<<<<<<< HEAD
     date = models.DateField(auto_now_add=True, null=True)
-=======
-
->>>>>>> 07f54e2b364566ea8c365ba945180b7284dd94bb
     def __str__(self):
         return self.category
 
 
 class Post(models.Model):
     Title = models.CharField(max_length=255)
-<<<<<<< HEAD
     Image = models.ImageField(null=True,upload_to="images/")
     Content = RichTextField(blank=True , null=True)
-=======
-    Image = models.ImageField(null=True, blank=True, upload_to="images/")
-    Content = RichTextField(blank=True, null=True)
->>>>>>> 07f54e2b364566ea8c365ba945180b7284dd94bb
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     tags = TaggableManager()
     author = models.ForeignKey(
