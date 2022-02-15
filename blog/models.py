@@ -23,7 +23,7 @@ class Post(models.Model):
     )
     date = models.DateTimeField(auto_now_add=True, null=True)
     likes = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="blog_posts", null=True, blank=True
+        settings.AUTH_USER_MODEL, related_name="blog_posts", blank=True
     )
 
     # like post
