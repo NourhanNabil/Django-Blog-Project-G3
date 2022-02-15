@@ -2,16 +2,18 @@ from sre_constants import SUCCESS
 from django.shortcuts import render, redirect
 from .models import Post, Category , Comment
 from django.shortcuts import render, redirect, get_object_or_404
-
-# from rest_framework.response import Response
-# from rest_framework.decorators import api_view
-# from .serializers import MemberSerializer
-from .forms import NewUserForm, PostForm , CommentForm
+from django.contrib.auth.models import User
+from .forms import (
+    NewUserForm,
+    PostForm,
+    CommentForm,
+    CategoryForm,
+    UserAdminPromoteForm,
+)
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 # like post
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
@@ -121,44 +123,60 @@ def search_bar(request):
         return render(request, "blog/search_bar.html", {})
 
 
-# # rest Framework views here.
-# @api_view(["GET"])
-# def api_all_users(request):
-#     all_users = Member.objects.all()
-#     user_ser = MemberSerializer(all_users, many=True)
-#     return Response(user_ser.data)
+
+def AdminPage(request):
+    return render(request, "admin-pages/admin_all.html")
 
 
-# @api_view(["GET"])
-# def api_one_user(request, user_id):
-#     user = Member.objects.get(id=user_id)
-#     user_ser = MemberSerializer(user, many=False)
-#     return Response(user_ser.data)
+def ManageUsers(request):
+    users = User.objects.all().order_by("-date_joined")
+    context = {"users": users}
+    return render(request, "admin-pages/admin_users.html", context)
 
 
-# @api_view(["POST"])
-# def api_add_user(request):
-#     user_ser = MemberSerializer(data=request.data)
-#     if user_ser.is_valid():
-#         user_ser.save()
-#         return redirect("api-all")
+def ManagePosts(request):
+    posts = Post.objects.all().order_by("-date")
+    context = {"posts": posts}
+    return render(request, "admin-pages/admin_posts.html", context)
 
 
-# @api_view(["POST"])
-# def api_edit_user(request, user_id):
-#     user = Member.objects.get(id=user_id)
-#     user_ser = MemberSerializer(data=request.data, instance=user)
-#     if user_ser.is_valid():
-#         user_ser.save()
-#         return redirect("api-all")
+def ManageCategories(request):
+    all_categories = Category.objects.all().order_by("-date")
+    context = {"all_categories": all_categories}
+    return render(request, "admin-pages/admin_categories.html", context)
 
 
-# @api_view(["DELETE"])
-# def api_del_user(request, user_id):
-#     user = Member.objects.get(id=user_id)
-#     user.delete()
-#     return Response("User Deleted successfully!")
+def ManageWords(request):
+    return render(request, "admin-pages/admin_words.html")
 
-# def logout(request):
-#     auth.logout(request)
-#     return redirect('home_url')
+
+class AddCategory(LoginRequiredMixin, CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "admin-pages/add_category.html"
+    success_url = reverse_lazy("manage-Categories")
+
+
+class UpdateCategory(LoginRequiredMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = "admin-pages/update_category.html"
+    success_url = reverse_lazy("manage-Categories")
+
+
+class DeleteCategory(LoginRequiredMixin, DeleteView):
+    model = Category
+    template_name = "admin-pages/delete_category.html"
+    success_url = reverse_lazy("manage-Categories")
+
+
+def promote_user_view(request):
+    if request.method == "POST":
+        form = UserAdminPromoteForm(request.POST)
+        print(form.data)
+        if form.is_valid():
+            user = User.objects.get(pk=form.cleaned_data["user"])
+            user.is_staff = True
+            user.save()
+            return redirect("manage-users")
+    return HttpResponse("", status=403)
