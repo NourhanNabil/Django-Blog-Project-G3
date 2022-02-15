@@ -1,6 +1,6 @@
 from django.urls import path,include
 from . import views
-from .views import AddPost, UpdatePost , DeletePost , AddComment
+from .views import AddPost, UpdatePost , DeletePost , AddComment , AddCategory, UpdateCategory ,DeleteCategory
 from .views import AddPost, UpdatePost, LikeView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -20,6 +20,9 @@ urlpatterns = [
     path('manage-blog/posts', views.ManagePosts, name="manage-posts"),
     path('manage-blog/Categories', views.ManageCategories, name="manage-Categories"),
     path('manage-blog/forbidden-words', views.ManageWords, name="manage-forbidden-words"),
+    path('manage-blog/Categories/Add', AddCategory.as_view(), name='add-category'),
+    path('manage-blog/Categories/edit/<int:pk>', UpdateCategory.as_view(), name='update-category'),
+    path('manage-blog/Categories/delete/<int:pk>', DeleteCategory.as_view(), name='delete-category'),
 
     # rest_framework URLs.
     # path('api-all', views.api_all_users, name='api-all'),

@@ -11,8 +11,9 @@
             <th class="text-uppercase" scope="col">Id</th>
             <th class="text-uppercase" scope="col">Title</th>
             <th class="text-uppercase" scope="col">Date created</th>
-            <th class="text-uppercase" scope="col">Author</th>
+            <th class="text-uppercase" scope="col">created by</th>
             <th class="text-uppercase" scope="col">Edit</th>
+            <th class="text-uppercase" scope="col">View</th>
             <th class="text-uppercase" scope="col">Delete</th>
         </tr>
     </thead>
@@ -24,6 +25,7 @@
             <td>{{post.date}}</td>
             <td>{{post.author}}</td>
             <td><a href="{% url 'update-post' post.id%}"><button class="btn btn-primary">Edit</button></a></td>
+            <td><a href="{% url 'post-details' post.id%}"><button class="btn btn-primary">View</button></a></td>
             <td><a href="{% url 'delete-post' post.id%}"><button class="btn btn-danger">Delete</button></a></td>
         <tr>
     </tbody>

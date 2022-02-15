@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Post , Comment
+from .models import Post , Comment ,Category
 
 
 class NewUserForm(UserCreationForm):
@@ -39,3 +39,13 @@ class CommentForm(forms.ModelForm):
             'author':forms.TextInput(attrs={'class':'form-control','value' :"" , 'id':'author-id' , "type":"hidden"}), 
             'content':forms.Textarea(attrs={'class':'form-control'}),
         }
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model=Category
+        fields=("category","author")
+        widgets={
+            'category':forms.TextInput(attrs={'class':'form-control'}),
+            'author':forms.TextInput(attrs={'class':'form-control','value' :"" , 'id':'authorId' , "type":"hidden"}),
+        
+        }   
