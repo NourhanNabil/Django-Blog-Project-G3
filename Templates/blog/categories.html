@@ -2,20 +2,48 @@
 {% load static %}
 {% block title_block %}<title>Categories</title>{% endblock %}
 {% block main_block %}
-<h1>Posts</h1>
+
 <ul>
-{% for post in category_posts %}
-          <li><a href="{% url 'post-details' post.id %}">{{post.Title}} </a>by {{post.author}}</li>
-          <li>{{ post.category }}</li>
-            {{post.Content}}
-            <img src="{{post.Image.url}}" alt="">
-           </li>
-        {% if user.is_authenticated %}
-          {% if user.id == post.author.id or user.is_staff %}
-           <li><a href="{% url 'update-post' post.id%}">Edit</a></li>
-           <li><a href="{% url 'delete-post' post.id%}">Delete</a></li>
-          {% endif %}
-        {% endif %}
-{% endfor %}
+  <div class="container">
+    <h1 >category</h1>
+    <br>
+    <div class="row">
+  <div class="col-lg-8">
+    <!-- Nested row for non-featured blog posts-->
+    <div class="row">
+      {% if not category_posts.all %}
+        <h4>No Posts Yet In This Category</h4>
+      {% else %}
+      {% for post in category_posts %}
+        <div class="col-lg-6">
+            <!-- Blog post-->
+            <div class="card mb-4"><a href="{% url 'post-details' post.id %}">
+              <img src="{{ post.Image.url }}" class="card-img-top" style="
+                  width: 100%;
+                  height: 15vw;
+                  object-fit: cover;
+              " alt="Post"></a>
+                <div class="card-body">
+                    <div class="small text-muted">{{post.date}}</div>
+                    <h2 class="card-title h4">{{post.Title}}</h2>
+                    <p class="card-text">{{post.Content|slice:":200"|safe}}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                    <a class="btn btn-primary" href="{% url 'post-details' post.id %}">Read more →</a>
+
+                  </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                  {% if user.is_authenticated %}
+                    {% if user.id == post.author.id or user.is_staff %}
+                  <a href="{% url 'update-post' post.id%}" class="far fa-edit">Edit Post</a>
+                  <a href="{% url 'delete-post' post.id%}" class="fa fa-trash text-danger">Delete Post</a> 
+                  {% endif %}
+                  {% endif %}
+                </div>
+            </div>
+            
+        </div>
+        {% endfor %}
+      {% endif %}
 </ul>
 {% endblock %}

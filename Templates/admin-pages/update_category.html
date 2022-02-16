@@ -1,7 +1,7 @@
-{% extends 'blog/base.html'%}
+{% extends '../blog/base.html'%}
 
 {% block title_block %}
-<title>Update Post</title>
+<title>Update Category</title>
 {% endblock %}
 {% block main_block %}
 <br><br><br><br>
@@ -10,7 +10,6 @@
     <br><br>
     <form method="POST">
         {% csrf_token %}
-        {{form.media}}
         {{ form.as_p }}
         <button type="submit" class="btn btn-secondary">Confirm</button>
     </form>

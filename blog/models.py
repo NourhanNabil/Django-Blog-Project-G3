@@ -7,9 +7,17 @@ from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     category = models.CharField(max_length=50)
-    date = models.DateField(auto_now_add=True, null=True)
+    subscribes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='category_subscribes', null=True)
+
+    def total_subscribes(self):
+        return self.subscribes.count()
+
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
+        )
+    date = models.DateTimeField(auto_now_add=True, null=True)
     def __str__(self):
-        return self.category
+        return self.category 
 
 
 class Post(models.Model):

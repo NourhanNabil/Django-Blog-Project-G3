@@ -1,93 +1,29 @@
-
-<html>
-    <head>
-        <style>
-           #footer {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                height: 2.5rem;            /* Footer height */
-                }
-        </style>
-    </head>
-    <body>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              
-           
-          
-          {% if posts.has_previous %}
-              <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
-          
-              <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
-              
-          {% endif %}
-          
-          <!--
-          <li class="page-item disabled"><a href="#" class="page-link">Page {{ venues.number }} of {{ venues.paginator.num_pages }}</a></li>
-          -->
-          
-          {% for i in nums %}
-              <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
-          
-          {% endfor %}
-          
-          
-          {% if posts.has_next %}
-              <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
-          
-              <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Last &raquo</a></li>
-          
-          {% endif %}
-          
-           </ul>
-          </nav>
-          <br/>
-          
-<!-- Footer -->
-<div class="footer">
-<footer class="text-center text-lg-start bg-light text-muted ">
-    <!-- Section: Social media -->
-    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-        <!-- Left -->
-        <div class="me-5 d-none d-lg-block">
-            <span>Get connected with us on social networks:</span>
-        </div>
-        <!-- Left -->
-
-        <!-- Right -->
-        <div>
-            <a href="" class="me-4 text-reset">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="" class="me-4 text-reset">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="" class="me-4 text-reset">
-                <i class="fab fa-google"></i>
-            </a>
-            <a href="" class="me-4 text-reset">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="" class="me-4 text-reset">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="" class="me-4 text-reset">
-                <i class="fab fa-github"></i>
-            </a>
-        </div>
-        <!-- Right -->
-    </section>
-    <!-- Section: Social media -->
-
-    <!-- Copyright -->
-    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        © 2022 Copyright:
-        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-    </div>
-    <!-- Copyright -->
-</footer>
-<!-- Footer -->
-</div>
-    </body>
-</html>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      
+   
+  
+  {% if post.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+  
+      <li class="page-item"><a class="page-link" href="?page={{ post.previous_page_number }}">Previous</a></li>
+      
+  {% endif %}
+  
+  {% for i in nums %}
+      <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+  
+  {% endfor %}
+  
+  
+  {% if post.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ post.next_page_number }}">Next</a></li>
+  
+      <li class="page-item"><a class="page-link" href="?page={{ post.paginator.num_pages }}">Last &raquo</a></li>
+  
+  {% endif %}
+  
+   </ul>
+  </nav>
+  <br/>
+  

@@ -11,6 +11,7 @@
             <th class="text-uppercase" scope="col">Id</th>
             <th class="text-uppercase" scope="col">Category</th>
             <th class="text-uppercase" scope="col">Date created</th>
+            <th class="text-uppercase" scope="col">created by </th>
             <th class="text-uppercase" scope="col">Edit</th>
             <th class="text-uppercase" scope="col">Delete</th>
         </tr>
@@ -21,14 +22,15 @@
             <td>{{category.id}}</td>
             <td>{{category.category}}</td>
             <td>{{category.date}}</td>
-            <td><button class="btn btn-primary">Edit</button></td>
-            <td><button class="btn btn-danger">Delete</button></td>
+            <td>{{category.author}}</td>
+            <td><a href="{% url 'update-category' category.id %}"><button class="btn btn-primary">Edit</button></a></td>
+            <td><a href="{% url 'delete-category' category.id %}"><button class="btn btn-danger">Delete</button></a></td>
         <tr>
     </tbody>
     {% endfor %}
 </table>
 <div class="d-flex justify-content-end me-5">
-<button class="btn btn-secondary">Add Category</button>
+<a href="{% url 'add-category' %}"><button class="btn btn-secondary">Add Category</button></a>
 </div>
 
 {% endblock %}

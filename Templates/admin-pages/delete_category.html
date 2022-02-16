@@ -1,16 +1,15 @@
-{% extends 'blog/base.html'%}
+{% extends '../blog/base.html'%}
 
 {% block title_block %}
-<title>Delete Post</title>
+<title>Delete Category</title>
 {% endblock %}
 {% block main_block %}
 <div class="form-group container">
-    <h1>Delete {{ post.Title }}</h1>
+    <h1>Delete {{ category.category }}</h1>
     <form method="POST">
         {% csrf_token %}
         <strong>Are You Sure?!</strong> <br>
-        <button type="submit" class="btn btn-danger">Delete Post!</button>
+        <button type="submit" class="btn btn-danger">Delete Category!</button>
     </form>
 </div>
-
 {% endblock %}
