@@ -6,10 +6,14 @@
 <ul>
   <div class="container">
     <h1 >category</h1>
+    <br>
     <div class="row">
   <div class="col-lg-8">
     <!-- Nested row for non-featured blog posts-->
     <div class="row">
+      {% if not category_posts.all %}
+        <h4>No Posts Yet In This Category</h4>
+      {% else %}
       {% for post in category_posts %}
         <div class="col-lg-6">
             <!-- Blog post-->
@@ -31,19 +35,15 @@
                 <div class="card-footer d-flex justify-content-between">
                   {% if user.is_authenticated %}
                     {% if user.id == post.author.id or user.is_staff %}
-                  <a href="{% url 'update-post' post.id%}" class="far fa-edit">Edit</a>
-                  <a href="{% url 'delete-post' post.id%}" class="fa fa-trash text-danger"></a> 
+                  <a href="{% url 'update-post' post.id%}" class="far fa-edit">Edit Post</a>
+                  <a href="{% url 'delete-post' post.id%}" class="fa fa-trash text-danger">Delete Post</a> 
                   {% endif %}
                   {% endif %}
                 </div>
             </div>
             
         </div>
-
-
-
-
-
         {% endfor %}
+      {% endif %}
 </ul>
 {% endblock %}

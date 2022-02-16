@@ -1,21 +1,13 @@
 {% extends 'blog/base.html'%}
 
 {% block main_block %}
-
 <header class="py-5 bg-light border-bottom mb-4">
   <div class="container">
       <div class="text-center my-5">
-        {% if user.is_authenticated %}  
-                    <h1 class="fw-bolder">Welcome {{ user.get_username}}</h1>
-
-                    {% else %}
-                    <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-                  {% endif %}
+               <h1 class="fw-bolder">Top Posts</h1>   
         </div>
   </div>
 </header>
-
-
 <!-- Page content-->
 <div class="container">
   <div class="row">
@@ -24,7 +16,6 @@
           <!-- Nested row for non-featured blog posts-->
           <div class="row">
             {% for post in posts %}
-
               <div class="col-lg-6">
                   <!-- Blog post-->
                   <div class="card mb-4"><a href="{% url 'post-details' post.id %}">
@@ -41,13 +32,10 @@
                           <a class="btn btn-primary" href="{% url 'post-details' post.id %}">Read more →</a>
                         </div>
                       </div>
-                  </div>
-                  
+                  </div>         
               </div>
               {% endfor %}
           </div>
-          <!-- Pagination-->
-
       </div>
       <!-- Side widgets-->
       <div class="col-lg-4">
@@ -56,7 +44,7 @@
               <div class="card-header">Search</div>
               <div class="card-body">
                   <div class="input-group">
-                      <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                      <input class="form-control" type="search" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" name="searched" />
                       <button class="btn btn-primary" id="button-search" type="button">Go!</button>
                   </div>
               </div>
@@ -66,7 +54,23 @@
               <div class="card-header">Categories</div>
                         <ul class="list-group ">
                             {% for category in categories %}
-                              <li class="list-group-item"><a href="{% url 'category' category.id %}">{{category.category}}</a></li>
+                              <p>{{category.subscribed}}</p>
+                              <li class="list-group-item"><a class="text-decoration-none" href="{% url 'category' category.id %}">{{category.category}}</a></li>
+                                <!-- subscribe button -->
+                               {% if request.user.is_authenticated %}
+                                  <form action="{% url 'subscribe' category.pk %}" method="POST">
+                                   {% csrf_token %} {% if category.id in list_of_subs %}
+                                   <button type="submit" name="category_id" value="{{category.id}}" class="btn btn-danger">
+                                    unsubscribe
+                                   </button>
+                                {% else %}
+                                   <button type="submit" name="category_id" value="{{category.id}}" class="btn btn-primary">
+                                   subscribe
+                                   </button>
+                                {% endif %}
+                                </form>
+                               {% endif %}
+                                <!-- end of subscribe button -->
                             {% endfor %}
                           </ul>
               </div>
@@ -74,10 +78,6 @@
           <!-- Side widget-->
       </div>
   </div>
-
-
-
-
       </div>
 </ul>
 

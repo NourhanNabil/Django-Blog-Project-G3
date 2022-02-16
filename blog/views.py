@@ -36,7 +36,11 @@ def home(request):
 
 def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
-    context = {"post": one_post}
+    total_likes = one_post.total_likes()
+    liked = False
+    if one_post.likes.filter(id = request.user.id).exists():
+        liked = True
+    context = {"post": one_post,'total_likes':total_likes, 'liked': liked}
     return render(request, "blog/post_details.html", context)
 
 
@@ -44,17 +48,6 @@ def categoryPosts(request, category_id):
     one_category = Category.objects.get(id=category_id)
     context = {"category": one_category}
     return render(request, "blog/category_posts.html", context)
-def postDetails(request,post_id):
-    one_post=Post.objects.get(id=post_id)
-    total_likes = one_post.total_likes()
-
-    liked = False
-    if one_post.likes.filter(id = request.user.id).exists():
-        liked = True
-
-    context={'post':one_post, 'total_likes':total_likes, 'liked': liked}
-    return render(request,'blog/post_details.html',context)
-
 
 class AddPost(LoginRequiredMixin, CreateView):
     model = Post
@@ -107,7 +100,7 @@ def register_view(request):
     )
 
 
-# like post view
+
 # like post view
 def LikeView(request, pk):
     # post_id as the submit button name
@@ -151,7 +144,7 @@ def AdminPage(request):
 
 
 def ManageUsers(request):
-    users = User.objects.all().order_by("-date_joined")
+    users = User.objects.all().order_by("id")
     context = {"users": users}
     return render(request, "admin-pages/admin_users.html", context)
 
