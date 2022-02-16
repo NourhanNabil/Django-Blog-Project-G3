@@ -31,17 +31,15 @@
                         <div class="card bg-light">
                             <div class="card-footer d-flex justify-content-between">
                                 {% if user.is_authenticated %}
-                                    {% if user.id == post.author.id or user.is_staff %}
-                                <a href="{% url 'update-post' post.id%}" class=" far fa-edit">Edit Post</a>
-                                {% if request.user.is_authenticated %}
-                                    <form action="{% url 'like_post' post.pk %}" method="POST">
+                                <form action="{% url 'like_post' post.pk %}" method="POST">
                                     {% csrf_token %} {% if liked %}
                                     <button
                                     type="submit"
                                     name="post_id"
                                     value="{{post.id}}"
-                                        class="btn btn-danger fa fa-thumbs-down"
+                                        class="btn btn-danger fa fa-thumbs-up"
                                         >
+                                        un-like
                                     </button>
                                     {% else %}
                                     <button
@@ -53,14 +51,18 @@
                                         like
                                     </button>
                                     {% endif %} 
-                                    {{total_likes}}
-                                    </form>
-                                    {% else %}
-                                    <small></small>
-                                    {% endif %}
+                                </form>
+                                
+                                {% else %}
+                                {% endif %}
+                              total:  {{total_likes}}
+                                likes
+                                <!-- edit and delete post for owner -->
+                                {% if user.id == post.author.id or user.is_staff %}
+                                <a href="{% url 'update-post' post.id%}" class=" far fa-edit">Edit Post</a>
                                 <a href="{% url 'delete-post' post.id%}" class="fa fa-trash text-danger"> Delete Post</a> 
                                 {% endif %}
-                                {% endif %}
+                                
                               </div>
                               <!-- Comment section-->
                             <div class="card-body">
