@@ -4,53 +4,9 @@
     <div class="border-end bg-white" id="sidebar-wrapper">
       <div class="sidebar-heading border-bottom bg-light">Categories</div>
       <div class="list-group list-group-flush">
-        <!-- {% for category in categories %}
+        {% for category in categories %}
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'category' category.id %}">{{category.category}}</a><span><button class="btn btn-secondary"><a href="#" class="text-decoration-none text-light">Subscribe</a></button></span>
-        {% endfor %} -->
-        
-{% for sub in list_of_subs %}
-
-{% endfor %}
-
-<ul>
-  {% for category in categories %}
-  <p>{{category.subscribed}}</p>
-  <li>
-    <a href="{% url 'category' category.id %}">{{category}}</a>
-    <!-- subscribe button -->
-    {% if request.user.is_authenticated %}
-
-    <form action="{% url 'subscribe' category.pk %}" method="POST">
-      {% csrf_token %} {% if category.id in list_of_subs %}
-      <button
-        type="submit"
-        name="category_id"
-        value="{{category.id}}"
-        class="btn btn-danger"
-      >
-        unsubscribe
-      </button>
-
-      {% else %}
-
-      <button
-        type="submit"
-        name="category_id"
-        value="{{category.id}}"
-        class="btn btn-primary"
-      >
-        subscribe
-      </button>
-      {% endif %}
-    </form>
-
-   
-    {% endif %}
-    <br />
-    <br />
-    <!-- end of subscribe button -->
-  </li>
-  {% endfor %}
+        {% endfor %}
       </div>
     </div>
     <!-- Page content wrapper
@@ -69,17 +25,14 @@
               <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
               {% if user.is_authenticated %}  
               <li class="nav-item active"><a class="nav-link" href="{% url 'add-post' %}">Add Post</a></li>
-              <li class="nav-item"><a href="{% url 'edit-profile' %}" class="nav-link">Edit profile</a></li>
-              {% if user.is_authenticated and user.is_staff %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'manage-blog' %}">Manage Blog</a></li>
-              {% endif %}
               <li class="nav-item"><a href="{% url 'logout' %}" type="button" class="btn btn-outline-primary me-2">Logout</a></li>
               <li class="nav-item active"><a class="nav-link disabled">Welcome {{ user.get_username}}</a></li>
               {% else %}
               <li class="nav-item"><a href="{% url 'login' %}" type="button" class="btn btn-outline-primary me-2">Login</a></li>
               <li class="nav-item"><a href="{% url 'register' %}" type="button" class="btn btn-primary">Sign-up</a></li>
-              {% endif %} 
-             
+              {% endif %} {% if user.is_authenticated and user.is_staff %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'manage-blog' %}">Manage Blog</a></li>
+              {% endif %}
                 <form class="d-flex" method=POST action="{% url 'search-bar' %}">
                   {% csrf_token %}
                   <input class="form-control ms-2 me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
@@ -89,6 +42,7 @@
           </div>
         </div>
       </nav> -->
+      
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
           <a class="navbar-brand" href="{% url 'home' %}">

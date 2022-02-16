@@ -1,4 +1,6 @@
-from .models import Post, Category, Comment
+from sre_constants import SUCCESS
+from django.shortcuts import render, redirect
+from .models import Post, Category , Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .forms import (
@@ -21,11 +23,14 @@ from django.contrib.auth.views import PasswordChangeView
 
 
 
-
 def home(request):
-    all_posts = Post.objects.all().order_by("-date")
-    all_categories = Category.objects.all().order_by("category")
-    context = {"posts": all_posts, "categories": all_categories}
+    all_posts = Post.objects.all().order_by('-date')
+    all_categories = Category.objects.all()
+    all_subs = Category.subscribes.through.objects.filter(user_id = request.user.id)
+    list_of_subs = []
+    for sub in all_subs:
+        list_of_subs.append(sub.category_id)
+    context = {"posts": all_posts, "categories": all_categories,'user_id': request.user.id, 'list_of_subs': list_of_subs}
     return render(request, "blog/home.html", context)
 
 
@@ -33,6 +38,22 @@ def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
     context = {"post": one_post}
     return render(request, "blog/post_details.html", context)
+
+
+def categoryPosts(request, category_id):
+    one_category = Category.objects.get(id=category_id)
+    context = {"category": one_category}
+    return render(request, "blog/category_posts.html", context)
+def postDetails(request,post_id):
+    one_post=Post.objects.get(id=post_id)
+    total_likes = one_post.total_likes()
+
+    liked = False
+    if one_post.likes.filter(id = request.user.id).exists():
+        liked = True
+
+    context={'post':one_post, 'total_likes':total_likes, 'liked': liked}
+    return render(request,'blog/post_details.html',context)
 
 
 class AddPost(LoginRequiredMixin, CreateView):
@@ -62,7 +83,6 @@ class AddComment(LoginRequiredMixin, CreateView):
         form.instance.post_id = self.kwargs["pk"]
         return super().form_valid(form)
 
-
 def category_view(request, cats):
     posts = Post.objects.filter(category=cats).order_by("-date")
     context = {"category_posts": posts}
@@ -88,8 +108,10 @@ def register_view(request):
 
 
 # like post view
+# like post view
 def LikeView(request, pk):
-    post = get_object_or_404(Post, id=request.POST.get("post_id"))
+    # post_id as the submit button name
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
     liked = False
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
@@ -98,7 +120,6 @@ def LikeView(request, pk):
         post.likes.add(request.user)
         liked = True
     return HttpResponseRedirect(reverse("post-details", args=[str(pk)]))
-
 
 def search_bar(request):
     if request.method == "POST":
@@ -110,6 +131,19 @@ def search_bar(request):
     else:
         return render(request, "blog/search_bar.html", {})
 
+
+# subscribe to category view
+def subView(request, pk):
+    # category_id as the submit button name
+    category = get_object_or_404(Category, id=request.POST.get('category_id'))
+    subscribed = False
+    if category.subscribes.filter(id = request.user.id).exists():
+        category.subscribes.remove(request.user)
+        subscribed = False
+    else:
+        category.subscribes.add(request.user)
+        subscribed = True
+    return redirect('/')
 
 
 def AdminPage(request):
