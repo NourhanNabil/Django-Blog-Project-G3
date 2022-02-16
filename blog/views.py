@@ -7,6 +7,8 @@ from .forms import (
     CommentForm,
     CategoryForm,
     UserAdminPromoteForm,
+    EditProfileForm,
+    PasswordChangingForm,
 )
 from django.contrib.auth import login
 from django.contrib import messages
@@ -15,6 +17,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # like post
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth.views import PasswordChangeView
+
+
 
 
 def home(request):
@@ -163,3 +168,21 @@ def promote_user_view(request):
             user.save()
             return redirect("manage-users")
     return HttpResponse("", status=403)
+
+
+class UserEditView(UpdateView):
+    form_class=EditProfileForm
+    template_name="registration/edit_profile.html"
+    success_url= reverse_lazy('home')
+
+    def get_object(self):
+        return self.request.user
+
+
+class PasswordsChangeView(PasswordChangeView):
+    form_class=PasswordChangingForm
+    template_name="registration/change_password.html"
+    success_url= reverse_lazy('password-success')
+
+def PasswordChanged(request):
+    return render(request, "registration/Password_successfully.html")

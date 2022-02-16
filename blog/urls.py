@@ -9,6 +9,8 @@ from .views import (
     UpdateCategory,
     DeleteCategory,
     LikeView,
+    UserEditView,
+    PasswordsChangeView,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -35,4 +37,7 @@ urlpatterns = [
     path("manage-blog/users/promote/", views.promote_user_view, name="promote-user"),
     # post likes url
     path("like/<int:pk>", LikeView, name="like_post"),
+    path("accounts/edit-profile/", UserEditView.as_view(), name="edit-profile"),
+    path("accounts/password/",PasswordsChangeView.as_view(),),
+    path("accounts/password_success/",views.PasswordChanged, name="password-success"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

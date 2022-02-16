@@ -25,14 +25,17 @@
               <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
               {% if user.is_authenticated %}  
               <li class="nav-item active"><a class="nav-link" href="{% url 'add-post' %}">Add Post</a></li>
+              <li class="nav-item"><a href="{% url 'edit-profile' %}" class="nav-link">Edit profile</a></li>
+              {% if user.is_authenticated and user.is_staff %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'manage-blog' %}">Manage Blog</a></li>
+              {% endif %}
               <li class="nav-item"><a href="{% url 'logout' %}" type="button" class="btn btn-outline-primary me-2">Logout</a></li>
               <li class="nav-item active"><a class="nav-link disabled">Welcome {{ user.get_username}}</a></li>
               {% else %}
               <li class="nav-item"><a href="{% url 'login' %}" type="button" class="btn btn-outline-primary me-2">Login</a></li>
               <li class="nav-item"><a href="{% url 'register' %}" type="button" class="btn btn-primary">Sign-up</a></li>
-              {% endif %} {% if user.is_authenticated and user.is_staff %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'manage-blog' %}">Manage Blog</a></li>
-              {% endif %}
+              {% endif %} 
+             
                 <form class="d-flex" method=POST action="{% url 'search-bar' %}">
                   {% csrf_token %}
                   <input class="form-control ms-2 me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
