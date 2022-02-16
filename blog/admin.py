@@ -11,7 +11,7 @@ class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         [
             "Post Information",
-            {"fields": ["Title", "Image", "Content", "category", "tags", "author", 'likes']},
+            {"fields": ["Title", "Image", "Content", "category", "tags", "author",]},
         ],
     )
     list_display = ("Title", "author", "category", "date")
@@ -20,7 +20,7 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    fieldsets = (["Category Information", {"fields": ["category"]}],)
+    fieldsets = (["Category Information", {"fields": ["category",]}],)
     list_display = ("category",)
     list_filter = ["category"]
     search_fields = ["category"]

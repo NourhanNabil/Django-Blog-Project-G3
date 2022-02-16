@@ -10,11 +10,17 @@ from django.views.generic import CreateView , UpdateView
 # like post
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+# subscribe
 
 def home(request):
     all_posts = Post.objects.all().order_by('-date')
-    all_categories = Category.objects.all().order_by('category')
-    context = {"posts": all_posts, "categories": all_categories}
+    all_categories = Category.objects.all()
+    all_subs = Category.subscribes.through.objects.filter(user_id = request.user.id)
+    list_of_subs = []
+    for sub in all_subs:
+        list_of_subs.append(sub.category_id)
+    # list_of_subs = list(map(category_id,all_subs))
+    context = {"posts": all_posts, "categories": all_categories,'user_id': request.user.id, 'all_subs': all_subs, 'list_of_subs': list_of_subs}
     return render(request, "blog/home.html", context)
 
 def postDetails(request,post_id):
@@ -69,6 +75,7 @@ def register_view(request):
 
 # like post view
 def LikeView(request, pk):
+    # post_id as the submit button name
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     liked = False
     if post.likes.filter(id = request.user.id).exists():
@@ -79,6 +86,19 @@ def LikeView(request, pk):
         liked = True
     return HttpResponseRedirect(reverse('post-details', args=[str(pk)]))
 
+
+# subscribe to category view
+def subView(request, pk):
+    # category_id as the submit button name
+    category = get_object_or_404(Category, id=request.POST.get('category_id'))
+    subscribed = False
+    if category.subscribes.filter(id = request.user.id).exists():
+        category.subscribes.remove(request.user)
+        subscribed = False
+    else:
+        category.subscribes.add(request.user)
+        subscribed = True
+    return redirect('/')
 
 
 # # rest Framework views here.

@@ -7,6 +7,10 @@ from django.urls import reverse
 
 class Category(models.Model):
     category = models.CharField(max_length=50)
+    subscribes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='category_subscribes', null=True)
+
+    def total_subscribes(self):
+        return self.subscribes.count()
 
     def __str__(self):
         return self.category
@@ -22,7 +26,7 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False
     )
     date = models.DateTimeField(auto_now_add=True, null=True)
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='blog_posts')
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='blog_posts', null=True)
 
 
     # like post

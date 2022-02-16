@@ -1,6 +1,6 @@
 from django.urls import path,include
 from . import views
-from .views import AddPost, UpdatePost, LikeView
+from .views import AddPost, UpdatePost, LikeView, subView
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -18,6 +18,8 @@ urlpatterns = [
     # path('api-del/<user_id>', views.api_del_user, name='api-del')
 
     # post likes url
-    path('like/<int:pk>', LikeView, name='like_post')
+    path('like/<int:pk>', LikeView, name='like_post'),
+    # category subscribe url
+    path('subscribe/<int:pk>', subView, name='subscribe'),
 ]
  
