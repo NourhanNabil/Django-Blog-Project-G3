@@ -54,7 +54,12 @@ def postDetails(request, post_id):
     liked = False
     if one_post.likes.filter(id=request.user.id).exists():
         liked = True
-    context = {"post": one_post, "total_likes": total_likes, "liked": liked}
+    context = {
+        "post": one_post,
+        "total_likes": total_likes,
+        "liked": liked,
+        "tags": ", ".join((row[0] for row in one_post.tags.values_list("name"))),
+    }
     return render(request, "blog/post_details.html", context)
 
 
