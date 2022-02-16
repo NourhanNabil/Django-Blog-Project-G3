@@ -67,7 +67,6 @@ class Comment(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="created at", blank=True, null=False
     )
-
     def __str__(self):
         return "%s - %s" % (self.post.Title, self.author)
 

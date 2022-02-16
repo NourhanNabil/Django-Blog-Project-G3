@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Post , Comment
+from .models import ForbiddenWord
 
 
 class NewUserForm(UserCreationForm):
@@ -39,3 +40,4 @@ class CommentForm(forms.ModelForm):
             'author':forms.TextInput(attrs={'class':'form-control','value' :"" , 'id':'author-id' , "type":"hidden"}), 
             'content':forms.Textarea(attrs={'class':'form-control'}),
         }
+

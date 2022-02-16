@@ -21,6 +21,7 @@ urlpatterns = [
     path('manage-blog/Categories', views.ManageCategories, name="manage-Categories"),
     path('manage-blog/forbidden-words', views.ManageWords, name="manage-forbidden-words"),
 
+
     # rest_framework URLs.
     # path('api-all', views.api_all_users, name='api-all'),
     # path('api-one/<user_id>', views.api_one_user, name='api-one'),

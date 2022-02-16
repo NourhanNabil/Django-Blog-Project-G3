@@ -1,10 +1,10 @@
-from .models import Post, Category , Comment
+from .models import Post, Category , Comment ,ForbiddenWord
 from django.shortcuts import render, redirect, get_object_or_404
 # from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 # from .serializers import MemberSerializer
 from django.contrib.auth.models import User
-from .forms import NewUserForm, PostForm , CommentForm
+from .forms import NewUserForm, PostForm , CommentForm 
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -12,11 +12,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # like post
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.core.paginator import Paginator
+
+
 
 def home(request):
     all_posts = Post.objects.all().order_by("-date")
     all_categories = Category.objects.all().order_by("category")   
-    context = {"posts": all_posts, "categories": all_categories}
+    p = Paginator(Post.objects.all(),1)
+    page = request.GET.get('page')
+    posts = p.get_page(page)
+    context = {"posts": all_posts, "categories": all_categories , 'posts':posts}
     return render(request, "blog/home.html", context)
 
 
@@ -92,9 +98,11 @@ def LikeView(request, pk):
 def search_bar(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        result = Post.objects.filter(name__contains=searched)
+        post_titles = Post.objects.filter(Title__contains=searched)
+        # tags = Post.objects.filter(tags__tag_name=searched)
+        # tag = Post.objects.filter(tag_name=searched)
         return render(request,
-        'blog/search_bar.html',{'searched':searched,'result':result})
+        'blog/search_bar.html',{'searched':searched,'post_titles':post_titles })
     else:
         return render(request,
         'blog/search_bar.html',{})
@@ -156,4 +164,7 @@ def ManageCategories(request):
 
 def ManageWords(request):
     return render(request, "admin-pages/admin_words.html")
+
+
+
 
