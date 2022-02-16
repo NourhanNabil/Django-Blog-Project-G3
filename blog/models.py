@@ -7,7 +7,9 @@ from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     category = models.CharField(max_length=50)
-    subscribes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='category_subscribes', null=True)
+    subscribes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="category_subscribes"
+    )
 
     def total_subscribes(self):
         return self.subscribes.count()
@@ -16,22 +18,22 @@ class Category(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
     )
     date = models.DateTimeField(auto_now_add=True, null=True)
+
     def __str__(self):
         return self.category
 
 
 class Post(models.Model):
     Title = models.CharField(max_length=255)
-    Image = models.ImageField(null=True,upload_to="images/")
-    Content = RichTextField(blank=True , null=True)
+    Image = models.ImageField(null=True, upload_to="images/")
+    Content = RichTextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     tags = TaggableManager()
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False
     )
     date = models.DateTimeField(auto_now_add=True, null=True)
-    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='blog_posts', null=True)
-
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="blog_posts")
 
     # like post
     def total_likes(self):
