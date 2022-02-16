@@ -1,0 +1,13 @@
+{% extends '../blog/base.html'%}
+
+{% block title_block %}
+<title>Admin Page</title>
+{% endblock %}
+{% block main_block %}
+<a class="btn btn-dark" href="{% url 'manage-users' %}">Users</a>
+<a class="btn btn-dark" href="{% url 'manage-posts' %}">Posts</a>
+<a class="btn btn-dark" href="{% url 'manage-Categories' %}">Categories</a>
+<a class="btn btn-dark" href="{% url 'manage-forbidden-words' %}">forbidden words</a>
+{% endblock %}
+
+

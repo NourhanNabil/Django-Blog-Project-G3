@@ -6,7 +6,7 @@
 <br />
 <br />
 <br />
-{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated and  user.id != post.author.id%}
 
 <form action="{% url 'like_post' post.pk %}" method="POST">
   {% csrf_token %} {% if liked %}
@@ -33,21 +33,23 @@
 </form>
 
 {% else %}
-<small>you must login to like</small>
+<small>...</small>
 {% endif %}
 <br />
 <br />
 <!-- end of likes button -->
-<img src="{{ post.Image }}" />
+<img src="{{ post.Image.url }}" />
 <small>Posted By :{{post.author}}</small>
-<p>{{post.Content}}</p>
-<p>Category:{{post.category}}</p>
+<p>{{post.Content|safe}}</p>
+<p>Category:{{post.category}}</p> 
 <p>Tags:{{post.tags}}</p>
 <p>Date:{{post.date}}</p>
+{% if user.is_authenticated %}
+  {% if user.id == post.author.id or user.is_staff %}
 <li><a href="{% url 'update-post' post.id%}">Edit</a></li>
-<button class="btn btn-secondary">
-  <a href="{% url 'home' %}" class="text-decoration-none text-light"
-    >Back to Home
-  </a>
-</button>
+<li><a href="{% url 'delete-post' post.id%}">Delete</a></li>
+  {% endif %}
+{% endif %}
+<button class="btn btn-secondary "><a href="{% url 'home' %}" class="text-decoration-none text-light">Back to Home </a></button>
+
 {% endblock %}

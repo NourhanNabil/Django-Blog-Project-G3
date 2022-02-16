@@ -10,8 +10,9 @@
     <br><br>
     <form method="POST">
         {% csrf_token %}
+        {{form.media}}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-secondary">Post</button>
+        <button type="submit" class="btn btn-secondary">Confirm</button>
     </form>
 </div>
 {% endblock %}

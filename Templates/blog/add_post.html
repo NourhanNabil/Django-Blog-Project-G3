@@ -9,11 +9,16 @@
 <div class="form-group container">
     <h1>Add Post</h1>
     <br><br>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
+        {{form.media}}
         {{ form.as_p }}
         <button type="submit" class="btn btn-secondary">Post</button>
     </form>
 </div>
+<script>
+    var name="{{user.id}}";
+    document.getElementById("author-id").value = name;
+</script>
 {% endblock %}
 

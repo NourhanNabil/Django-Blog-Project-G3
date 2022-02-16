@@ -1,73 +1,49 @@
-{% extends 'blog/base.html'%} {% block main_block %}
-<h1>Post</h1>
-<h1>Post</h1>
-<h1>Post</h1>
-<h1>Post</h1>
-<h1>Post</h1>
-<ul>
-  {% for post in posts %}
-  <li>
-    <a href="{% url 'post-details' post.id %}">{{post.Title}} </a>by
-    {{post.author}}
-  </li>
-  <img src="{{post.Image}}" />
-  <li>{{ post.Content|slice:":100" }}</li>
-  <li>category:{{post.category}}</li>
-  <li>tags:{{post.tags}}</li>
-  <li>Date:{{post.date}}</li>
-  <li><a href="{% url 'update-post' post.id%}">Edit</a></li>
-  <li>
-    <a href="{% url 'post-details' post.id %}"
-      >{{post.Title}} - {{post.author}}</a
-    >
-    <br />
-    {{post.Content}}
-    <img src="{{post.Image}}" alt="{{post.Image}}" />
-  </li>
-  {% endfor %}
-</ul>
-{% for sub in list_of_subs %}
-
-{% endfor %}
+{% extends 'blog/base.html'%}
+{% block main_block %}
+<h1 style="text-align: center;">Top Posts</h1>
+<div class="container ">
 
 <ul>
-  {% for category in categories %}
-  <p>{{category.subscribed}}</p>
-  <li>
-    <a href="{% url 'category' category.id %}">{{category}}</a>
-    <!-- subscribe button -->
-    {% if request.user.is_authenticated %}
-
-    <form action="{% url 'subscribe' category.pk %}" method="POST">
-      {% csrf_token %} {% if category.id in list_of_subs %}
-      <button
-        type="submit"
-        name="category_id"
-        value="{{category.id}}"
-        class="btn btn-danger"
-      >
-        unsubscribe
-      </button>
-
-      {% else %}
-
-      <button
-        type="submit"
-        name="category_id"
-        value="{{category.id}}"
-        class="btn btn-primary"
-      >
-        subscribe
-      </button>
-      {% endif %}
-    </form>
-
-   
-    {% endif %}
-    <br />
-    <br />
-    <!-- end of subscribe button -->
-  </li>
-  {% endfor %}
+    {% for post in posts %}
+    <div class="card gedf-card mb-3">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="mr-2">
+                        <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                    </div>
+                    <div class="ml-2">
+                        <div class="h5 m-0">{{post.Title}}</div>
+                        <div class="h7 text-muted">
+                            <span>created by: {{post.author}}</span>
+                            <span>- Date: {{post.date}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    {% if user.is_authenticated %}
+                       {% if user.id == post.author.id or user.is_staff %}
+                    <a href="{% url 'update-post' post.id%}"><i class='far fa-edit'></i> <span>Edit</span></a>
+                    <a href="{% url 'delete-post' post.id%}"><i class="fa fa-trash"></i></a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{post.Content|slice:":200"|safe}}</p>
+            <span><a class="card-link" href="{% url 'post-details' post.id %}">Read More</a></span>
+            <img src="{{ post.Image.url }}" width="250" alt="">
+        </div>
+        <div class="card-footer">
+            {% if user.is_authenticated %}
+            <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+            <a href="{% url 'add-comment' post.id %}" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+            {% endif %}
+        </div>
+    </div>
+        {% endfor %}
 </ul>
+</div>
 {% endblock %}
