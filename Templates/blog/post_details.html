@@ -1,12 +1,44 @@
-{% extends 'blog/base.html'%} {% block title_block %}
+
+
+{% extends 'blog/base.html'%}
+{% block title_block %}
+
 <title>{{post.Title}}</title>
-{% endblock %} {% block main_block %}
-<h1>{{post.Title}}</h1>
-<!-- likes button -->
-<br />
-<br />
-<br />
-{% if request.user.is_authenticated and  user.id != post.author.id%}
+
+{% endblock %}
+
+{% block main_block %}
+<div class="container mt-5">
+            <div class="row">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">{{post.Title}}</h1>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">Posted on {{post.date}} by :{{post.author}}</div>
+                            <!-- Post categories-->
+                            <a class="badge bg-secondary text-decoration-none link-light" href="">{{post.category}}</p></a>
+                            <a class="badge bg-secondary text-decoration-none link-light" href="">{{post.tags}}</p></a>
+                        </header>
+                        <!-- Preview image figure-->
+                        <figure class="mb-4"><img class="img-fluid rounded" src="{{ post.Image.url }}" alt="..." /></figure>
+                        
+                        <!-- Post content-->
+                        <section class="mb-5">
+                          <p>{{post.Content|safe}}</p>
+                        </section>
+                    </article>
+                    <!-- Comments section-->
+                    <section class="mb-5">
+                        <div class="card bg-light">
+                            <div class="card-footer d-flex justify-content-between">
+                                {% if user.is_authenticated %}
+                                    {% if user.id == post.author.id or user.is_staff %}
+                                <a href="{% url 'update-post' post.id%}" class=" far fa-edit">Edit</a>
+                                <a href="{% url 'add-comment' post.id %}" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                                {% if request.user.is_authenticated and  user.id != post.author.id%}
 
 <form action="{% url 'like_post' post.pk %}" method="POST">
   {% csrf_token %} {% if liked %}
@@ -14,9 +46,9 @@
   type="submit"
   name="post_id"
   value="{{post.id}}"
-    class="btn btn-danger"
+    class="btn btn-danger fa fa-thumbs-down"
     >
-    unlike  
+      
 </button>
 
 {% else %}
@@ -25,7 +57,7 @@
     type="submit"
     name="post_id"
     value="{{post.id}}"
-    class="btn btn-primary"
+    class="btn btn-primary fa fa-thumbs-up"
     >
     like
 </button>
@@ -33,12 +65,66 @@
 </form>
 
 {% else %}
-<small>...</small>
+<small> </small>
 {% endif %}
-<br />
-<br />
+                                <a href="{% url 'delete-post' post.id%}" class="fa fa-trash text-danger"></a> 
+                                {% endif %}
+                                {% endif %}
+                              </div>
+                            <div class="card-body">
+                                <!-- Comment form-->
+<!--                                 
+                                <form class="mb-4" method="POST">
+                                    
+                                  {% csrf_token %}
+                                  {{ form.as_p }}
+                                  <button type="submit" class="btn btn-secondary">Add Comment</button>
+                                </form> -->
+                                <!-- Comment with nested comments-->
+                                <div class="d-flex mb-4">
+                                    <!-- Parent comment-->
+                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">Commenter Name</div>
+                                        If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
+                                        <!-- Child comment 1-->
+                                        <div class="d-flex mt-4">
+                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                            <div class="ms-3">
+                                                <div class="fw-bold">Commenter Name</div>
+                                                And under those conditions, you cannot establish a capital-market evaluation of that enterprise. You can't get investors.
+                                            </div>
+                                        </div>
+                                        <!-- Child comment 2-->
+                                        <div class="d-flex mt-4">
+                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                            <div class="ms-3">
+                                                <div class="fw-bold">Commenter Name</div>
+                                                When you put money directly to a problem, it makes a good headline.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Single comment-->
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">Commenter Name</div>
+                                        When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+ 
+            </div>
+        </div>
+
+
+
 <!-- end of likes button -->
-<img src="{{ post.Image }}" />
+<!-- <div class="container ">
+<img src="{{ post.Image.url }}" />
 <small>Posted By :{{post.author}}</small>
 <p>{{post.Content|safe}}</p>
 <p>Category:{{post.category}}</p> 
@@ -50,6 +136,15 @@
 <li><a href="{% url 'delete-post' post.id%}">Delete</a></li>
   {% endif %}
 {% endif %}
+{% if user.is_authenticated %}
+<a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+<a href="{% url 'add-comment' post.id %}" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+{% endif %}              </div>
 <button class="btn btn-secondary "><a href="{% url 'home' %}" class="text-decoration-none text-light">Back to Home </a></button>
+</div> -->
 
+<script>
+  var name = "{{user.id}}";
+  document.getElementById("author-id").value = name;
+</script>
 {% endblock %}

@@ -1,6 +1,12 @@
-{% extends "registration/header.html" %} 
+{% extends 'blog/base.html'%}
+{% block title_block %}
+
+<title>Register</title>
+
+{% endblock %}
 {% block content %} 
 {% load crispy_forms_tags %}
+{% block main_block %}
 
 <!--Register-->
 <div class="container py-5">
@@ -13,5 +19,6 @@
     If you already have an account, <a href="">login</a> instead.
   </p>
 </div>
+{% endblock %}
 
 {% endblock %}
