@@ -4,9 +4,53 @@
     <div class="border-end bg-white" id="sidebar-wrapper">
       <div class="sidebar-heading border-bottom bg-light">Categories</div>
       <div class="list-group list-group-flush">
-        {% for category in categories %}
+        <!-- {% for category in categories %}
         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'category' category.id %}">{{category.category}}</a><span><button class="btn btn-secondary"><a href="#" class="text-decoration-none text-light">Subscribe</a></button></span>
-        {% endfor %}
+        {% endfor %} -->
+        
+{% for sub in list_of_subs %}
+
+{% endfor %}
+
+<ul>
+  {% for category in categories %}
+  <p>{{category.subscribed}}</p>
+  <li>
+    <a href="{% url 'category' category.id %}">{{category}}</a>
+    <!-- subscribe button -->
+    {% if request.user.is_authenticated %}
+
+    <form action="{% url 'subscribe' category.pk %}" method="POST">
+      {% csrf_token %} {% if category.id in list_of_subs %}
+      <button
+        type="submit"
+        name="category_id"
+        value="{{category.id}}"
+        class="btn btn-danger"
+      >
+        unsubscribe
+      </button>
+
+      {% else %}
+
+      <button
+        type="submit"
+        name="category_id"
+        value="{{category.id}}"
+        class="btn btn-primary"
+      >
+        subscribe
+      </button>
+      {% endif %}
+    </form>
+
+   
+    {% endif %}
+    <br />
+    <br />
+    <!-- end of subscribe button -->
+  </li>
+  {% endfor %}
       </div>
     </div>
     <!-- Page content wrapper

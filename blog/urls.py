@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from .views import AddPost, UpdatePost, LikeView, subView
 from .views import (
     AddPost,
     UpdatePost,
@@ -34,5 +35,8 @@ urlpatterns = [
     path("manage-blog/Categories/delete/<int:pk>",DeleteCategory.as_view(),name="delete-category",),
     path("manage-blog/users/promote/", views.promote_user_view, name="promote-user"),
     # post likes url
-    path("like/<int:pk>", LikeView, name="like_post"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('like/<int:pk>', LikeView, name='like_post'),
+    # category subscribe url
+    path('subscribe/<int:pk>', subView, name='subscribe'),
+]
+ 

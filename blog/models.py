@@ -7,6 +7,11 @@ from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     category = models.CharField(max_length=50)
+    subscribes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='category_subscribes', null=True)
+
+    def total_subscribes(self):
+        return self.subscribes.count()
+
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
     )
@@ -25,9 +30,8 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False
     )
     date = models.DateTimeField(auto_now_add=True, null=True)
-    likes = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="blog_posts", blank=True
-    )
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='blog_posts', null=True)
+
 
     # like post
     def total_likes(self):
