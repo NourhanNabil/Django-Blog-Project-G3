@@ -16,8 +16,8 @@
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">Posted on {{post.date}} by :{{post.author}}</div>
                             <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'category' post.category.id %}">{{post.category}}</p></a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="">{{post.tags}}</p></a>
+                            <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'category' post.category.id %}">{{post.category}}</a>
+                            <p class="badge bg-secondary text-decoration-none link-light" >{{tags}}</p>
                         </header>
                         <!-- Preview image figure-->
                         <figure class="mb-4"><img class="img-fluid rounded" src="{{ post.Image.url }}" alt="" /></figure>
