@@ -1,5 +1,6 @@
 
 {% extends 'blog/base.html'%}
+{% load static %}
 {% block title_block %}
 <title>{{post.Title}}</title>
 {% endblock %}
@@ -75,16 +76,18 @@
                                         {% else %}
                                         {% for comment in post.comments.all %}
                                         <div class="flex-shrink-0">
-                                        <img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." />
+                                        <img class="rounded-circle" src="{% static 'img/avatar.jpg' %}" width="50em" alt="user-avatar" />
                                         <strong>{{comment.author}} -{{comment.created_at}}</strong>
                                         <p class="ms-5">{{comment.content}}</p>
                                         {% if user.is_authenticated %}
                                             {% if user.id == post.author.id or user.is_staff or user.id == comment.author.id %}  
-                                             <a href="{% url 'delete-comment' comment.id  %}" class="fa fa-trash text-danger"> </a>
-                                             {% endif %}
-                                            {% if user.id == comment.author.id %}
-                                             <a href="{% url 'update-comment' comment.id %}" class=" far fa-edit"></a>
+                                             <a href="{% url 'delete-comment' comment.id  %}" class="fa fa-trash text-danger">Delete</a>
                                             {% endif %}
+                                            {% if user.id == comment.author.id %}
+                                             <a href="{% url 'update-comment' comment.id %}" class=" far fa-edit">Edit</a>
+                                            {% endif %}
+                                            {% else %}
+                                            <p>You are not allowed</p>
                                         {% endif %}
                                         <hr>
                                         </div>          
