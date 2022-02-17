@@ -1,0 +1,16 @@
+{% extends 'blog/base.html'%}
+
+{% block title_block %}
+<title>Delete Post</title>
+{% endblock %}
+{% block main_block %}
+<div class="form-group container">
+    <h1>Delete Comment</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <strong>Are You Sure?!</strong> <br>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+
+{% endblock %}

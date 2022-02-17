@@ -36,6 +36,7 @@ def home(request):
 
 def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
+    comment=Comment.objects.all()
     total_likes = one_post.total_likes()
     liked = False
     if one_post.likes.filter(id=request.user.id).exists():
@@ -81,6 +82,17 @@ class AddComment(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.post_id = self.kwargs["pk"]
         return super().form_valid(form)
+
+class UpdateComment(LoginRequiredMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "blog/update_comment.html"
+    
+
+class DeleteComment(LoginRequiredMixin, DeleteView):
+    model = Comment
+    template_name = "blog/delete_comment.html"
+    success_url = reverse_lazy("home")
 
 
 def category_view(request, cats):
