@@ -7,20 +7,24 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
                     {% if user.is_authenticated %}  
-                    <li class="nav-item active"><a class="nav-link" href="{% url 'add-post' %}">Add Post</a></li>
-                    <li class="nav-item"><a href="{% url 'edit-profile' %}" class="nav-link">Edit profile</a></li>
-                    <li class="nav-item"><a href="{% url 'logout' %}" type="button" class="btn btn-outline-primary me-2">Logout</a></li>
                     <li class="nav-item active"><a class="nav-link disabled">Welcome {{ user.get_username}}</a></li>
+                    <li class="nav-item"><a href="{% url 'edit-profile' %}" class="nav-link">Edit profile</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="{% url 'add-post' %}">Add Post</a></li>
+                      {% if user.is_authenticated and user.is_staff %}
+                      <li class="nav-item"></i><a class="nav-link active"  href="{% url 'manage-blog' %}">Manage Blog</a></li>
+                      {% endif %}
+                    <li class="nav-item"><a href="{% url 'logout' %}" type="button" class="btn btn-outline-primary me-2">Logout</a></li>
                     {% else %}
                     <li class="nav-item"><a href="{% url 'login' %}" type="button" class="btn btn-outline-primary me-2">Login</a></li>
                     <li class="nav-item"><a href="{% url 'register' %}" type="button" class="btn btn-primary">Sign-up</a></li>
                     {% endif %} 
-                    {% if user.is_authenticated and user.is_staff %}
-                    <li class="nav-item"></i><a class="nav-link active"  href="{% url 'manage-blog' %}">Manage Blog</a></li>
-                    {% endif %}
-                </ul>
+                  </ul>
+                  <form method="POST" action="{% url 'search-bar' %}" class="d-flex">
+                    {% csrf_token %}
+                    <input class="form-control me-2 ms-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                  </form>
             </div>
         </div>
     </nav>

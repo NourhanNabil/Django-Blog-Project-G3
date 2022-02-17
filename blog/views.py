@@ -1,47 +1,42 @@
-from sre_constants import SUCCESS
-from django.shortcuts import render, redirect
-from .models import Post, Category, Comment
+from unicodedata import category
+from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from .forms import (
-    NewUserForm,
-    PostForm,
-    CommentForm,
-    CategoryForm,
-    UserAdminPromoteForm,
-    EditProfileForm,
-    PasswordChangingForm,
-)
+from .forms import *
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
-
 # like post
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import PasswordChangeView
-
+from django.core.paginator import Paginator
 
 def home(request):
-    all_posts = Post.objects.all().order_by("-date")
+    pagination = Paginator(Post.objects.all().order_by("-date"),5)
+    page = request.GET.get('page')
+    post = pagination.get_page(page) 
+    nums = "a" * post.paginator.num_pages  
     all_categories = Category.objects.all()
     all_subs = Category.subscribes.through.objects.filter(user_id=request.user.id)
     list_of_subs = []
     for sub in all_subs:
         list_of_subs.append(sub.category_id)
     context = {
-        "posts": all_posts,
+        'posts': post,
+		'nums':nums ,
         "categories": all_categories,
         "user_id": request.user.id,
         "list_of_subs": list_of_subs,
-    }
+    } 
     return render(request, "blog/home.html", context)
 
 
 def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
+    comment=Comment.objects.all()
     total_likes = one_post.total_likes()
     liked = False
     if one_post.likes.filter(id=request.user.id).exists():
@@ -88,6 +83,17 @@ class AddComment(LoginRequiredMixin, CreateView):
         form.instance.post_id = self.kwargs["pk"]
         return super().form_valid(form)
 
+class UpdateComment(LoginRequiredMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = "blog/update_comment.html"
+    
+
+class DeleteComment(LoginRequiredMixin, DeleteView):
+    model = Comment
+    template_name = "blog/delete_comment.html"
+    success_url = reverse_lazy("home")
+
 
 def category_view(request, cats):
     posts = Post.objects.filter(category=cats).order_by("-date")
@@ -129,10 +135,10 @@ def LikeView(request, pk):
 
 def search_bar(request):
     if request.method == "POST":
-        searched = request.POST["searched"]
-        result = Post.objects.filter(name__contains=searched)
+        searched = request.POST['searched']
+        posts = Post.objects.filter(Title__icontains=searched)
         return render(
-            request, "blog/search_bar.html", {"searched": searched, "result": result}
+            request, "blog/search_bar.html", {"searched": searched, "posts": posts}
         )
     else:
         return render(request, "blog/search_bar.html", {})
@@ -158,24 +164,30 @@ def AdminPage(request):
 
 def ManageUsers(request):
     users = User.objects.all().order_by("id")
-    context = {"users": users}
+    users_count=User.objects.all().count()
+    context = {"users": users,"users_count":users_count}
     return render(request, "admin-pages/admin_users.html", context)
 
 
 def ManagePosts(request):
     posts = Post.objects.all().order_by("-date")
-    context = {"posts": posts}
+    posts_count=Post.objects.all().count()
+    context = {"posts": posts,"posts_count":posts_count}
     return render(request, "admin-pages/admin_posts.html", context)
 
 
 def ManageCategories(request):
     all_categories = Category.objects.all().order_by("-date")
-    context = {"all_categories": all_categories}
+    categories_count=Category.objects.all().count()
+    context = {"all_categories": all_categories,"categories_count":categories_count}
     return render(request, "admin-pages/admin_categories.html", context)
 
 
 def ManageWords(request):
-    return render(request, "admin-pages/admin_words.html")
+    all_words = ForbiddenWord.objects.all().order_by("-date")
+    words_count=ForbiddenWord.objects.all().count()
+    context = {"all_words": all_words,"words_count":words_count}
+    return render(request, "admin-pages/admin_words.html",context)
 
 
 class AddCategory(LoginRequiredMixin, CreateView):
@@ -244,3 +256,22 @@ def block_user_view(request):
             messages.success(request, 'Profile successfully disabled.')
         
         return redirect("/")
+
+class AddForbbidenWord(LoginRequiredMixin, CreateView):
+    model = ForbiddenWord
+    form_class = ForbiddenWordForm
+    template_name = "admin-pages/add_word.html"
+    success_url = reverse_lazy("manage-forbidden-words")
+
+
+class UpdateForbbidenWord(LoginRequiredMixin, UpdateView):
+    model = ForbiddenWord
+    form_class = ForbiddenWordForm
+    template_name = "admin-pages/update_word.html"
+    success_url = reverse_lazy("manage-forbidden-words")
+
+
+class DeleteForbbidenWord(LoginRequiredMixin, DeleteView):
+    model = ForbiddenWord
+    template_name = "admin-pages/delete_word.html"
+    success_url = reverse_lazy("manage-forbidden-words")

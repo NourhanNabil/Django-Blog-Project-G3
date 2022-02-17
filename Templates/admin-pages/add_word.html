@@ -1,0 +1,20 @@
+{% extends '../blog/base.html'%}
+
+{% block title_block %}
+<title>Create A New Word</title>
+{% endblock %}
+{% block main_block %}
+<div class="form-group container">
+    <h1>Add Word</h1>
+    <br><br>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-secondary">Create</button>
+    </form>
+</div>
+<script>
+    var name = "{{user.id}}";
+    document.getElementById("admin-Id").value = name;
+</script>
+{% endblock %}
