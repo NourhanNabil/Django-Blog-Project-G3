@@ -23,7 +23,7 @@ def _check_user_is_admin(user):
 
 class AdminMixin(UserPassesTestMixin):
     def test_func(self):
-        return self.is_staff
+        return self.request.user.is_staff
 
 
 def home(request):
