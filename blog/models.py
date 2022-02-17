@@ -24,7 +24,7 @@ class Post(models.Model):
     Image = models.ImageField(null=True, upload_to="images/")
     Content = RichTextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False
     )
@@ -46,7 +46,7 @@ class Post(models.Model):
 
 
 class ForbiddenWord(models.Model):
-    forbidden_word = models.CharField(max_length=50)
+    forbidden_word = models.CharField(max_length=50, unique=True)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
     )
