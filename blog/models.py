@@ -7,23 +7,26 @@ from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     category = models.CharField(max_length=50)
-    subscribes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='category_subscribes', null=True)
+    subscribes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="category_subscribes", null=True
+    )
 
     def total_subscribes(self):
         return self.subscribes.count()
 
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
-        )
+    )
     date = models.DateTimeField(auto_now_add=True, null=True)
+
     def __str__(self):
-        return self.category 
+        return self.category
 
 
 class Post(models.Model):
     Title = models.CharField(max_length=255)
-    Image = models.ImageField(null=True,upload_to="images/")
-    Content = RichTextField(blank=True , null=True)
+    Image = models.ImageField(null=True, upload_to="images/")
+    Content = RichTextField(blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     tags = TaggableManager()
     author = models.ForeignKey(
@@ -49,10 +52,16 @@ class ForbiddenWord(models.Model):
     forbidden_word = models.CharField(max_length=50)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
-        )
+    )
     date = models.DateTimeField(auto_now_add=True, null=True)
+
     def __str__(self):
         return self.forbidden_word
+
+    def save(self, *args, **kwargs) -> None:
+
+        self.forbidden_word = self.forbidden_word.strip()
+        return super().save(*args, **kwargs)
 
 
 class Comment(models.Model):
@@ -78,6 +87,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="created at", blank=True, null=False
     )
+
     def __str__(self):
         return "%s - %s" % (self.post.Title, self.author)
 
