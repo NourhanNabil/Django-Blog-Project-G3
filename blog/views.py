@@ -81,6 +81,8 @@ class UpdatePost(LoginRequiredMixin, UpdateView):
     template_name = "blog/update_post.html"
 
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return self.model.objects.all()
         return Post.objects.filter(author=self.request.user)
 
 
@@ -90,6 +92,8 @@ class DeletePost(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("home")
 
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return self.model.objects.all()
         return Post.objects.filter(author=self.request.user)
 
 # comments add,delete,update views
@@ -110,6 +114,8 @@ class UpdateComment(LoginRequiredMixin, UpdateView):
     template_name = "blog/update_comment.html"
 
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return self.model.objects.all()
         return Comment.objects.filter(author=self.request.user)
 
 
@@ -119,6 +125,8 @@ class DeleteComment(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("home")
 
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return self.model.objects.all()
         return Comment.objects.filter(author=self.request.user)
 
 
