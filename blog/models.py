@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from taggit.managers import TaggableManager
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from ckeditor.fields import RichTextField
 
 class Category(models.Model):
@@ -33,13 +33,14 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, related_name="blog_posts", blank=True
     )
 
-    # like post
+    # total numbers of likes to be shown in the post
     def total_likes(self):
         return self.likes.count()
 
     def __str__(self):
         return self.Title + " by " + str(self.author)
 
+    # to redirect when adding post or updating post 
     def get_absolute_url(self):
         return reverse("post-details", args=[str(self.pk)])
 
@@ -83,34 +84,12 @@ class Comment(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="created at", blank=True, null=False
     )
-
+     
+     # to make the comment appear with author name and post title
     def __str__(self):
         return "%s - %s" % (self.post.Title, self.author)
 
+    # to redirect when adding comment or updating comment 
     def get_absolute_url(self):
         return reverse("post-details", args=[str(self.post.pk)])
 
-
-class Reply(models.Model):
-    comment = models.ForeignKey(
-        Comment,
-        on_delete=models.CASCADE,
-        related_name="replies",
-        verbose_name="comment",
-        null=False,
-        blank=False,
-    )
-    content = models.TextField(
-        verbose_name="blog post comment reply content", null=False, blank=False
-    )
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="replies",
-        verbose_name="created by",
-        null=False,
-        blank=False,
-    )
-    created_at = models.DateTimeField(
-        auto_now_add=True, verbose_name="created at", blank=True, null=False
-    )

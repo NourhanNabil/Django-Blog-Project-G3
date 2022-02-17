@@ -6,7 +6,7 @@ from django.contrib.auth.forms import (
 )
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
-from .models import ForbiddenWord, Post, Comment, Category
+from .models import *
 from django.contrib.auth import authenticate
 
 

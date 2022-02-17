@@ -58,7 +58,7 @@ urlpatterns = [
     path(
         "manage-blog/forbidden-words", views.ManageWords, name="manage-forbidden-words"
     ),
-    # post manage-categories
+    # admin manage-categories
     path("manage-blog/Categories/Add", AddCategory.as_view(), name="add-category"),
     path(
         "manage-blog/Categories/edit/<int:pk>",
@@ -80,7 +80,7 @@ urlpatterns = [
     path("accounts/password_success/", views.PasswordChanged, name="password-success"),
     # category subscribe url
     path("subscribe/<int:pk>", subView, name="subscribe"),
-    # post manage-forbidden-words
+    # admin manage-forbidden-words
     path("manage-blog/words/Add", AddForbbidenWord.as_view(), name="add-word"),
     path(
         "manage-blog/words/edit/<int:pk>",

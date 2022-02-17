@@ -63,12 +63,8 @@ def postDetails(request, post_id):
     return render(request, "blog/post_details.html", context)
 
 
-def categoryPosts(request, category_id):
-    one_category = Category.objects.get(id=category_id)
-    context = {"category": one_category}
-    return render(request, "blog/category_posts.html", context)
+# Posts add,delete,update views
 
-# Post section
 class AddPost(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
@@ -129,6 +125,7 @@ class DeleteComment(LoginRequiredMixin, DeleteView):
             return self.model.objects.all()
         return Comment.objects.filter(author=self.request.user)
 
+# list all categories
 
 def category_view(request, cats):
     posts = Post.objects.filter(category=cats).order_by("-date")
@@ -158,7 +155,7 @@ class UserLoginView(LoginView):
     form_class = UserAuthenticationForm
 
 
-# like post view
+# like/unlike post view
 @login_required
 def LikeView(request, pk):
     # post_id as the submit button name
@@ -195,6 +192,7 @@ def subView(request, pk):
     return redirect("/")
 
 # admin pages (users,categories,forbidden words, and posts)
+
 @user_passes_test(_check_user_is_admin)
 def AdminPage(request):
     return render(request, "admin-pages/admin_all.html")
@@ -252,6 +250,7 @@ class DeleteCategory(AdminMixin, DeleteView):
     template_name = "admin-pages/delete_category.html"
     success_url = reverse_lazy("manage-Categories")
 
+# to give promotion to user to be admin 
 
 @user_passes_test(_check_user_is_admin)
 def promote_user_view(request):
@@ -264,6 +263,7 @@ def promote_user_view(request):
             return redirect("manage-users")
     return HttpResponse("", status=403)
 
+# Update profile page view(user details)
 
 class UserEditView(LoginRequiredMixin, UpdateView):
     form_class = EditProfileForm
@@ -273,16 +273,18 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         return self.request.user
 
+# change user password view
 
 class PasswordsChangeView(LoginRequiredMixin, PasswordChangeView):
     form_class = PasswordChangingForm
     template_name = "registration/change_password.html"
     success_url = reverse_lazy("password-success")
 
-
+# page view for confirmation that password have been chnaged
 def PasswordChanged(request):
     return render(request, "registration/Password_successfully.html")
 
+# block/unblock normal users by admins
 
 @user_passes_test(_check_user_is_admin)
 def block_user_view(request):
