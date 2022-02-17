@@ -138,12 +138,13 @@ def LikeView(request, pk):
 def search_bar(request):
     if request.method == "POST":
         searched = request.POST["searched"]
-        result = Post.objects.filter(name__contains=searched)
+        result = Post.objects.filter(Title__contains=searched)
         return render(
             request, "blog/search_bar.html", {"searched": searched, "result": result}
         )
     else:
         return render(request, "blog/search_bar.html", {})
+
 
 
 # subscribe to category view
