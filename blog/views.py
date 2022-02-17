@@ -13,6 +13,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import PasswordChangeView
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 def home(request):
     pagination = Paginator(Post.objects.all().order_by("-date"),5)
@@ -136,7 +137,7 @@ def LikeView(request, pk):
 def search_bar(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        posts = Post.objects.filter(Title__icontains=searched)
+        posts = Post.objects.filter(Q(Title__icontains=searched) | Q(tags__name__in=[searched]))
         return render(
             request, "blog/search_bar.html", {"searched": searched, "posts": posts}
         )
@@ -277,17 +278,3 @@ class DeleteForbbidenWord(LoginRequiredMixin, DeleteView):
     template_name = "admin-pages/delete_word.html"
     success_url = reverse_lazy("manage-forbidden-words")
 
-
-
-
-# def check_forbidden_words_in_comment(request, content):
-#     coment_txt_arr = content.split(",")
-#     all_forbidden_words = ForbiddenWord.objects.all()
-#     for word in all_forbidden_words:
-#         replaced=""
-#         if content.find(word.forbidden_word):
-#             for c in word.forbidden_word:
-#                 replaced+="*"
-#             content= content.replace(word.forbidden_word,replaced)
-
-#     return HttpResponseRedirect('/')
