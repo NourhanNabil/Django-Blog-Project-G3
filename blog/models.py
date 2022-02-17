@@ -47,7 +47,6 @@ class Post(models.Model):
 
 class ForbiddenWord(models.Model):
     forbidden_word = models.CharField(max_length=50)
-    # fields = ('forbiddenWord')
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
         )
