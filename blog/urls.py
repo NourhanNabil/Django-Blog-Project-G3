@@ -15,6 +15,8 @@ urlpatterns = [
     path("category/<str:cats>/", views.category_view, name="category"),
     path("search_bar", views.search_bar, name="search-bar"),
     path("post/<int:pk>/comment", AddComment.as_view(), name="add-comment"),
+    path("post/comment/edit/<int:pk>", UpdateComment.as_view(), name="update-comment"),
+    path("post/comment/<int:pk>/remove", DeleteComment.as_view(), name="delete-comment"),
     path("manage-blog", views.AdminPage, name="manage-blog"),
     path("manage-blog/users", views.ManageUsers, name="manage-users"),
     path("manage-blog/posts", views.ManagePosts, name="manage-posts"),
@@ -25,6 +27,7 @@ urlpatterns = [
     path("manage-blog/Categories/edit/<int:pk>",UpdateCategory.as_view(),name="update-category"),
     path("manage-blog/Categories/delete/<int:pk>",DeleteCategory.as_view(),name="delete-category",),
     path("manage-blog/users/promote/", views.promote_user_view, name="promote-user"),
+    path("manage-blog/users/block/", views.block_user_view, name="block-user"),
     # post likes url
     path("like/<int:pk>", LikeView, name="like_post"),
      # post edit-profile
