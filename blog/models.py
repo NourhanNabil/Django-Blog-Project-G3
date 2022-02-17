@@ -4,7 +4,6 @@ from taggit.managers import TaggableManager
 from django.urls import reverse, reverse_lazy
 from ckeditor.fields import RichTextField
 
-
 class Category(models.Model):
     category = models.CharField(max_length=50)
     subscribes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='category_subscribes', null=True)

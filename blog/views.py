@@ -276,3 +276,18 @@ class DeleteForbbidenWord(LoginRequiredMixin, DeleteView):
     model = ForbiddenWord
     template_name = "admin-pages/delete_word.html"
     success_url = reverse_lazy("manage-forbidden-words")
+
+
+
+
+# def check_forbidden_words_in_comment(request, content):
+#     coment_txt_arr = content.split(",")
+#     all_forbidden_words = ForbiddenWord.objects.all()
+#     for word in all_forbidden_words:
+#         replaced=""
+#         if content.find(word.forbidden_word):
+#             for c in word.forbidden_word:
+#                 replaced+="*"
+#             content= content.replace(word.forbidden_word,replaced)
+
+#     return HttpResponseRedirect('/')
