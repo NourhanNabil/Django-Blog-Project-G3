@@ -37,4 +37,5 @@ urlpatterns = [
     path("manage-blog/words/Add", AddForbbidenWord.as_view(), name="add-word"),
     path("manage-blog/words/edit/<int:pk>",UpdateForbbidenWord.as_view(),name="update-word"),
     path("manage-blog/words/delete/<int:pk>",DeleteForbbidenWord.as_view(),name="delete-word",),
+    # path(r'^(?P<comment_txt>[0-9a-zA-Z ]+)/check_comment/$', views.check_forbidden_words_in_comment,name="check-comment"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
