@@ -232,3 +232,15 @@ class PasswordsChangeView(PasswordChangeView):
 
 def PasswordChanged(request):
     return render(request, "registration/Password_successfully.html")
+
+def block_user_view(request):
+    if request.method == "POST":
+        form = UserAdminPromoteForm(request.POST)
+        print(form.data)
+        if form.is_valid():
+            user = User.objects.get(pk=form.cleaned_data["user"])
+            user.is_active = False
+            user.save()
+            messages.success(request, 'Profile successfully disabled.')
+        
+        return redirect("/")

@@ -12,6 +12,7 @@ from .views import (
     LikeView,
     UserEditView,
     PasswordsChangeView,
+    block_user_view,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -36,6 +37,7 @@ urlpatterns = [
     path("manage-blog/Categories/edit/<int:pk>",UpdateCategory.as_view(),name="update-category",),
     path("manage-blog/Categories/delete/<int:pk>",DeleteCategory.as_view(),name="delete-category",),
     path("manage-blog/users/promote/", views.promote_user_view, name="promote-user"),
+    path("manage-blog/users/block/", views.block_user_view, name="block-user"),
     # post likes url
     path("like/<int:pk>", LikeView, name="like_post"),
     path("accounts/edit-profile/", UserEditView.as_view(), name="edit-profile"),

@@ -51,7 +51,13 @@
           </button>
         </td>
       </form>
-      <td><button class="btn btn-primary">Block</button></td>
+      <form action="{% url 'block-user' %}" method="post">
+        {% csrf_token %}
+      <td><button class="btn btn-primary"
+        type="submit"
+        name="user"
+        value="{{user.id}}"
+        >Block</button></td></form>
       {% endif %}
     </tr>
   </tbody>
