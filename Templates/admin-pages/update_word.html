@@ -1,18 +1,16 @@
-{% extends 'blog/base.html'%}
-{% load crispy_forms_tags %}
+{% extends '../blog/base.html'%}
 
 {% block title_block %}
-<title>Update Post</title>
+<title>Update word</title>
 {% endblock %}
 {% block main_block %}
 <br><br><br><br>
 <div class="form-group container">
-    <h1>Update Post</h1>
+    <h1>Update word</h1>
     <br><br>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST">
         {% csrf_token %}
-        {{form.media}}
-        {{ form|crispy }}
+        {{ form.as_p }}
         <button type="submit" class="btn btn-secondary">Confirm</button>
     </form>
 </div>

@@ -1,1 +1,40 @@
 {% extends '../blog/base.html'%}
+
+{% block title_block %}
+<title>Manage Categories</title>
+{% endblock %}
+{% block main_block %}
+<table class="table caption-top">
+    <caption class="fw-bold fs-5">
+    <div class="d-flex justify-content-between p-3">
+        <p>List of Words</p>
+        <p>Total Number of Words : {{words_count}}</p>
+    </div>   
+    </caption>
+    <thead>
+        <tr>
+            <th class="text-uppercase" scope="col">Word</th>
+            <th class="text-uppercase" scope="col">Date created</th>
+            <th class="text-uppercase" scope="col">created by </th>
+            <th class="text-uppercase" scope="col">Edit</th>
+            <th class="text-uppercase" scope="col">Delete</th>
+        </tr>
+    </thead>
+    {% for word in all_words %}
+    <tbody>
+        <tr>
+            <td>{{word.forbidden_word}}</td>
+            <td>{{word.date}}</td>
+            <td>{{word.author}}</td>
+            <td><a href="{% url 'update-word' word.id %}"><button class="btn btn-primary">Edit</button></a></td>
+            <td><a href="{% url 'delete-word' word.id %}"><button class="btn btn-danger">Delete</button></a>
+            </td>
+        <tr>
+    </tbody>
+    {% endfor %}
+</table>
+<div class="d-flex justify-content-end me-5">
+    <a href="{% url 'add-word' %}"><button class="btn btn-secondary">Add Word</button></a>
+</div>
+
+{% endblock %}

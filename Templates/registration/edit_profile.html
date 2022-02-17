@@ -9,7 +9,9 @@
         {% csrf_token %}
         {{form.as_p}}
         <button class="btn btn-secondary" type="submit">Update Profile</button>
+        <a href="{% url 'change-password' %}" class="btn btn-secondary" >Change Password</a>
     </form>
+   
 </div>
 
 {% endblock %}

@@ -5,16 +5,37 @@
         {% if searched %}
             <h1>You Searched For {{ searched }}</h1>
             <br/>
-            {% for post in post_titles %}
-              <a href="{% url 'post-details' post.id %}"> {{ post.Title }} - {{ post.tags }}</a></br>
-            {% endfor %}
-            <!-- {% for post in tags %}
-            <a href="{% url 'post-details' post.id %}"> {{ post.Title }} - {{ post.tags }}</a></br>
-             {% endfor %} -->
+        <div class="container">
+            <div class="row">
+                <!-- Blog entries-->
+                <div class="col-lg-8">
+                    <!-- Nested row for non-featured blog posts-->
+                    <div class="row">
+                        {% for post in posts %}
+                        <div class="col-lg-6">
+                            <!-- Blog post-->
+                            <div class="card mb-4"><a href="{% url 'post-details' post.id %}">
+                                    <img src="{{ post.Image.url }}" class="card-img-top" style="
+                                width: 100%;
+                                height: 15vw;
+                                object-fit: cover;
+                            " alt="Post"></a>
+                                <div class="card-body">
+                                    <div class="small text-muted">{{post.date}}</div>
+                                    <h2 class="card-title h4">{{post.Title}}</h2>
+                                    <p class="card-text">{{post.Content|slice:":200"|safe}}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a class="btn btn-primary" href="{% url 'post-details' post.id %}">Read more →</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
         {% else %}
         <h1>You forgot to search</h1>
         {% endif %}
     </center>
 
 {% endblock %}
-
