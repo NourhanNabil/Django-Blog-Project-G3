@@ -27,6 +27,7 @@ urlpatterns = [
     path("manage-blog/Categories/edit/<int:pk>",UpdateCategory.as_view(),name="update-category"),
     path("manage-blog/Categories/delete/<int:pk>",DeleteCategory.as_view(),name="delete-category",),
     path("manage-blog/users/promote/", views.promote_user_view, name="promote-user"),
+    path("manage-blog/users/block/", views.block_user_view, name="block-user"),
     # post likes url
     path("like/<int:pk>", LikeView, name="like_post"),
      # post edit-profile
