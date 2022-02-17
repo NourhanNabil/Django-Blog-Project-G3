@@ -1,3 +1,4 @@
+from unicodedata import category
 from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
@@ -7,7 +8,6 @@ from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
-
 # like post
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
@@ -15,12 +15,9 @@ from django.contrib.auth.views import PasswordChangeView
 from django.core.paginator import Paginator
 
 def home(request):
-    all_posts = Post.objects.all().order_by("-date")
-
-
-    p = Paginator(Post.objects.all(),1)
+    pagination = Paginator(Post.objects.all().order_by("-date"),5)
     page = request.GET.get('page')
-    post = p.get_page(page) 
+    post = pagination.get_page(page) 
     nums = "a" * post.paginator.num_pages  
     all_categories = Category.objects.all()
     all_subs = Category.subscribes.through.objects.filter(user_id=request.user.id)
@@ -28,9 +25,8 @@ def home(request):
     for sub in all_subs:
         list_of_subs.append(sub.category_id)
     context = {
-        'post': post,
+        'posts': post,
 		'nums':nums ,
-        "posts": all_posts,
         "categories": all_categories,
         "user_id": request.user.id,
         "list_of_subs": list_of_subs,
@@ -127,10 +123,10 @@ def LikeView(request, pk):
 
 def search_bar(request):
     if request.method == "POST":
-        searched = request.POST["searched"]
-        result = Post.objects.filter(name__contains=searched)
+        searched = request.POST['searched']
+        posts = Post.objects.filter(Title__icontains=searched)
         return render(
-            request, "blog/search_bar.html", {"searched": searched, "result": result}
+            request, "blog/search_bar.html", {"searched": searched, "posts": posts}
         )
     else:
         return render(request, "blog/search_bar.html", {})
@@ -156,25 +152,29 @@ def AdminPage(request):
 
 def ManageUsers(request):
     users = User.objects.all().order_by("id")
-    context = {"users": users}
+    users_count=User.objects.all().count()
+    context = {"users": users,"users_count":users_count}
     return render(request, "admin-pages/admin_users.html", context)
 
 
 def ManagePosts(request):
     posts = Post.objects.all().order_by("-date")
-    context = {"posts": posts}
+    posts_count=Post.objects.all().count()
+    context = {"posts": posts,"posts_count":posts_count}
     return render(request, "admin-pages/admin_posts.html", context)
 
 
 def ManageCategories(request):
     all_categories = Category.objects.all().order_by("-date")
-    context = {"all_categories": all_categories}
+    categories_count=Category.objects.all().count()
+    context = {"all_categories": all_categories,"categories_count":categories_count}
     return render(request, "admin-pages/admin_categories.html", context)
 
 
 def ManageWords(request):
     all_words = ForbiddenWord.objects.all().order_by("-date")
-    context = {"all_words": all_words}
+    words_count=ForbiddenWord.objects.all().count()
+    context = {"all_words": all_words,"words_count":words_count}
     return render(request, "admin-pages/admin_words.html",context)
 
 

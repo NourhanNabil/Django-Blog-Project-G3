@@ -3,7 +3,10 @@
 {% endblock %} {% block main_block %}
 <table class="table caption-top">
   <caption class="fw-bold fs-5">
-    List of Users
+    <div class="d-flex justify-content-between p-3">
+      <p>List of Users</p> 
+       <p>Total Number of Users : {{users_count}}</p> 
+    </div>
   </caption>
   <thead>
     <tr>
@@ -57,4 +60,5 @@
   </tbody>
   {% endfor %}
 </table>
+
 {% endblock %}

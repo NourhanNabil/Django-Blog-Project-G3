@@ -3,10 +3,10 @@
       
    
   
-  {% if post.has_previous %}
+  {% if posts.has_previous %}
       <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
   
-      <li class="page-item"><a class="page-link" href="?page={{ post.previous_page_number }}">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
       
   {% endif %}
   
@@ -17,9 +17,9 @@
   
   
   {% if post.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ post.next_page_number }}">Next</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
   
-      <li class="page-item"><a class="page-link" href="?page={{ post.paginator.num_pages }}">Last &raquo</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Last &raquo</a></li>
   
   {% endif %}
   

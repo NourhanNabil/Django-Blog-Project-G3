@@ -5,7 +5,12 @@
 {% endblock %}
 {% block main_block %}
 <table class="table caption-top">
-    <caption class="fw-bold fs-5">List of Categories</caption>
+    <caption class="fw-bold fs-5">
+    <div class="d-flex justify-content-between p-3">
+        <p>List of Words</p>
+        <p>Total Number of Words : {{words_count}}</p>
+    </div>   
+    </caption>
     <thead>
         <tr>
             <th class="text-uppercase" scope="col">Word</th>

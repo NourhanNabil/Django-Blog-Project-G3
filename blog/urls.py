@@ -29,7 +29,7 @@ urlpatterns = [
     path("like/<int:pk>", LikeView, name="like_post"),
      # post edit-profile
     path("accounts/edit-profile/", UserEditView.as_view(), name="edit-profile"),
-    path("accounts/password/",PasswordsChangeView.as_view(),),
+    path("accounts/password/",PasswordsChangeView.as_view(),name='change-password'),
     path("accounts/password_success/",views.PasswordChanged, name="password-success"),
      # category subscribe url
     path('subscribe/<int:pk>', subView, name='subscribe'),

@@ -86,10 +86,12 @@ class EditProfileForm(UserChangeForm):
     first_name= forms.CharField(max_length=100,widget=forms.TextInput(attrs={"class": "form-control"}))
     last_name= forms.CharField(max_length=100,widget=forms.TextInput(attrs={"class": "form-control"}))
     username= forms.CharField(max_length=100,widget=forms.TextInput(attrs={"class": "form-control"}))
+    password = None
 
+    
     class Meta:
         model = User
-        fields = ("username","first_name","last_name", "email", "password")
+        fields = ("username","first_name","last_name", "email")
 
 
 class PasswordChangingForm(PasswordChangeForm):
