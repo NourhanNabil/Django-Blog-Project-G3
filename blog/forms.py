@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm , UserChangeForm , PasswordChangeForm
 from django.contrib.auth.models import User
-from .models import Post, Comment, Category
+from .models import ForbiddenWord, Post, Comment, Category
 
 
 class NewUserForm(UserCreationForm):
@@ -100,3 +100,19 @@ class PasswordChangingForm(PasswordChangeForm):
     class Meta:
         model = User
         fields = ("old_password","new_password1","new_password2")
+
+class ForbiddenWordForm(forms.ModelForm):
+    class Meta:
+        model = ForbiddenWord
+        fields = ("forbidden_word", "author")
+        widgets = {
+            "forbidden_word": forms.TextInput(attrs={"class": "form-control"}),
+            "author": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "value": "",
+                    "id": "admin-Id",
+                    "type": "hidden",
+                }
+            ),
+        }

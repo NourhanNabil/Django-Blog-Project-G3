@@ -1,17 +1,15 @@
 {% extends '../blog/base.html'%}
 
 {% block title_block %}
-<title>Update Category</title>
+<title>Delete Word</title>
 {% endblock %}
 {% block main_block %}
-<br><br><br><br>
 <div class="form-group container">
-    <h1>Update Category</h1>
-    <br><br>
+    <h1>Delete Word </h1>
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-secondary">Confirm</button>
+        <strong>Are You Sure?!</strong> <br>
+        <button type="submit" class="btn btn-danger">Delete Word!</button>
     </form>
 </div>
 {% endblock %}

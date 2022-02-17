@@ -14,10 +14,13 @@
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1">{{post.Title}}</h1>
                             <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">Posted on {{post.date}} by :{{post.author}}</div>
+                            <div class="text-muted fst-italic mb-2"><strong>Posted on:</strong> {{post.date}} <strong>by:</strong>:{{post.author}}</div>
                             <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'category' post.category.id %}">{{post.category}}</a>
-                            <p class="badge bg-secondary text-decoration-none link-light" >{{tags}}</p>
+                            <strong>Category:</strong> <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'category' post.category.id %}">{{post.category}}</a>
+                            <br> <strong>Tags:</strong>
+                            {% for tag in post.tags.all %}
+                            <p class="badge bg-secondary text-decoration-none link-light" >{{tag}}</p>
+                            {% endfor %}
                         </header>
                         <!-- Preview image figure-->
                         <figure class="mb-4"><img class="img-fluid rounded" src="{{ post.Image.url }}" alt="" /></figure>
@@ -52,10 +55,9 @@
                                     </button>
                                     {% endif %} 
                                 </form>
-                                
                                 {% else %}
                                 {% endif %}
-                              total:  {{total_likes}}
+                                total:  {{total_likes}}
                                 likes
                                 <!-- edit and delete post for owner -->
                                 {% if user.id == post.author.id or user.is_staff %}

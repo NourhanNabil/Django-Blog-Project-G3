@@ -1,17 +1,7 @@
-from sre_constants import SUCCESS
-from django.shortcuts import render, redirect
-from .models import Post, Category, Comment
+from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from .forms import (
-    NewUserForm,
-    PostForm,
-    CommentForm,
-    CategoryForm,
-    UserAdminPromoteForm,
-    EditProfileForm,
-    PasswordChangingForm,
-)
+from .forms import *
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -183,7 +173,9 @@ def ManageCategories(request):
 
 
 def ManageWords(request):
-    return render(request, "admin-pages/admin_words.html")
+    all_words = ForbiddenWord.objects.all().order_by("-date")
+    context = {"all_words": all_words}
+    return render(request, "admin-pages/admin_words.html",context)
 
 
 class AddCategory(LoginRequiredMixin, CreateView):
@@ -240,3 +232,23 @@ class PasswordsChangeView(PasswordChangeView):
 
 def PasswordChanged(request):
     return render(request, "registration/Password_successfully.html")
+
+
+class AddForbbidenWord(LoginRequiredMixin, CreateView):
+    model = ForbiddenWord
+    form_class = ForbiddenWordForm
+    template_name = "admin-pages/add_word.html"
+    success_url = reverse_lazy("manage-forbidden-words")
+
+
+class UpdateForbbidenWord(LoginRequiredMixin, UpdateView):
+    model = ForbiddenWord
+    form_class = ForbiddenWordForm
+    template_name = "admin-pages/update_word.html"
+    success_url = reverse_lazy("manage-forbidden-words")
+
+
+class DeleteForbbidenWord(LoginRequiredMixin, DeleteView):
+    model = ForbiddenWord
+    template_name = "admin-pages/delete_word.html"
+    success_url = reverse_lazy("manage-forbidden-words")
