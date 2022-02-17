@@ -1,4 +1,5 @@
 {% extends 'blog/base.html'%}
+{% load forbidden_words %}
 
 {% block main_block %}
 <header class="py-5 bg-light border-bottom mb-4">
@@ -27,7 +28,7 @@
                       <div class="card-body">
                           <div class="small text-muted">{{post.date}}</div>
                           <h2 class="card-title h4">{{post.Title}}</h2>
-                          <p class="card-text">{{post.Content|slice:":200"|safe}}</p>
+                          <p class="card-text">{{post.Content|slice:":200"|forbid|safe}}</p>
                           <div class="d-flex justify-content-between align-items-center">
                           <a class="btn btn-primary" href="{% url 'post-details' post.id %}">Read more →</a>
                         </div>
