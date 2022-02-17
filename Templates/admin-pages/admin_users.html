@@ -15,8 +15,8 @@
       <th class="text-uppercase" scope="col">Email</th>
       <th class="text-uppercase" scope="col">Date Joined</th>
       <th class="text-uppercase" scope="col">Staff Status</th>
-      <th class="text-uppercase" scope="col">Block/unblock</th>
       <th class="text-uppercase" scope="col">promote</th>
+      <th class="text-uppercase" scope="col">Block/unblock</th>
     </tr>
   </thead>
   {% for user in users %}
@@ -54,13 +54,20 @@
           </button>
         </td>
       </form>
-      <form action="{% url 'block-user' %}" method="post">
-        {% csrf_token %}
-      <td><button class="btn btn-primary"
-        type="submit"
-        name="user"
-        value="{{user.id}}"
-        >Block</button></td></form>
+        <form action="{% url 'block-user' %}" method="post">
+          {% csrf_token %}
+        <td><button class="btn btn-primary"
+          type="submit"
+          name="user"
+          value="{{user.id}}"
+          >
+          {% if user.is_active %}
+            Block
+          {% else %}
+            Unblock
+          {% endif%}
+        </button></td></form>
+
       {% endif %}
     </tr>
   </tbody>

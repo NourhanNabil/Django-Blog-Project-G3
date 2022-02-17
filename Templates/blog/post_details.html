@@ -1,5 +1,7 @@
 
 {% extends 'blog/base.html'%}
+{% load forbidden_words %}
+
 {% block title_block %}
 <title>{{post.Title}}</title>
 {% endblock %}
@@ -26,7 +28,7 @@
                         <figure class="mb-4"><img class="img-fluid rounded" src="{{ post.Image.url }}" alt="" /></figure>
                         <!-- Post content-->
                         <section class="mb-5">
-                          <p>{{post.Content|safe}}</p>
+                          <p>{{post.Content|forbid|safe}}</p>
                         </section>
                     </article>
                     <!-- likes section-->
@@ -77,7 +79,7 @@
                                         <div class="flex-shrink-0">
                                         <img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." />
                                         <strong>{{comment.author}} -{{comment.created_at}}</strong>
-                                        <p class="ms-5">{{comment.content}}</p>
+                                        <p class="ms-5">{{comment.content|forbid}}</p>
                                         {% if user.is_authenticated %}
                                             {% if user.id == post.author.id or user.is_staff or user.id == comment.author.id %}  
                                              <a href="{% url 'delete-comment' comment.id  %}" class="fa fa-trash text-danger"> </a>

@@ -14,6 +14,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import PasswordChangeView, LoginView
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 def _check_user_is_admin(user):
@@ -162,7 +163,9 @@ def LikeView(request, pk):
 def search_bar(request):
     if request.method == "POST":
         searched = request.POST["searched"]
-        posts = Post.objects.filter(Title__icontains=searched)
+        posts = Post.objects.filter(
+            Q(Title__icontains=searched) | Q(tags__name__in=[searched])
+        )
         return render(
             request, "blog/search_bar.html", {"searched": searched, "posts": posts}
         )
