@@ -11,7 +11,7 @@ class PostAdmin(admin.ModelAdmin):
     fieldsets = (
         [
             "Post Information",
-            {"fields": ["Title", "Image", "Content", "category", "tags", "author",]},
+            {"fields": ["Title", "Image", "Content", "category", "tags", "author","likes"]},
         ],
     )
     list_display = ("Title", "author", "category", "date")

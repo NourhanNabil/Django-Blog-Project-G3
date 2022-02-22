@@ -7,6 +7,7 @@ from ckeditor.fields import RichTextField
 class Category(models.Model):
     category = models.CharField(max_length=50,unique=True)
     subscribes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='category_subscribes')
+   
     def total_subscribes(self):
         return self.subscribes.count()
 

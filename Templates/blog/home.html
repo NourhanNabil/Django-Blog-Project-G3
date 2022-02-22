@@ -2,18 +2,18 @@
 {% load forbidden_words %}
 
 {% block main_block %}
-<header class="py-5 bg-light border-bottom mb-4">
+<header class="py-3 bg-light border-bottom mb-4 ">
   <div class="container">
-      <div class="text-center my-5">
+      <div class="text-center my-3">
                <h1 class="fw-bolder">Top Posts</h1>   
         </div>
   </div>
 </header>
 <!-- Page content-->
-<div class="container">
-  <div class="row">
+<div class="container ">
+  <div class="row ">
       <!-- Blog entries-->
-      <div class="col-lg-8">
+      <div class="col-lg-8 col-sm-7 ">
           <!-- Nested row for non-featured blog posts-->
           <div class="row">
             {% for post in posts %}
@@ -36,43 +36,40 @@
                   </div>         
               </div>
               {% endfor %}
+            </div>
           </div>
-      </div>
-      <!-- Side widgets-->
-      <div class="col-lg-4">
-          <!-- Categories widget-->
-          <div class="card mb-4">
-              <div class="card-header">Categories</div>
-                        <ul class="list-group ">
-                            {% for category in categories %}
-                              <p>{{category.subscribed}}</p>
-                              <li class="list-group-item"><a class="text-decoration-none" href="{% url 'category' category.id %}">{{category.category}}</a></li>
+          <!-- Side widgets-->
+          <div class="col-lg-4 col-sm-5">
+              <!-- Categories widget-->
+              <div class="card mb-4">
+                  <div class="card-header">Categories</div>
+                            <ul class="list-group ">
+                              {% for category in categories %}
+                              <li class="list-group-item d-flex justify-content-between align-items-center"><a class="text-decoration-none"
+                                  href="{% url 'category' category.id %}">{{category.category}}</a>
                                 <!-- subscribe button -->
-                               {% if request.user.is_authenticated %}
-                                  <form action="{% url 'subscribe' category.pk %}" method="POST">
-                                   {% csrf_token %} {% if category.id in list_of_subs %}
-                                   <button type="submit" name="category_id" value="{{category.id}}" class="btn btn-danger">
+                                {% if request.user.is_authenticated %}
+                                <form action="{% url 'subscribe' category.pk %}" method="POST">
+                                  {% csrf_token %} {% if category.id in list_of_subs %}
+                                  <button type="submit" name="category_id" value="{{category.id}}" class="btn btn-danger">
                                     unsubscribe
-                                   </button>
-                                {% else %}
-                                   <button type="submit" name="category_id" value="{{category.id}}" class="btn btn-primary">
-                                   subscribe
-                                   </button>
-                                {% endif %}
+                                  </button>
+                                  {% else %}
+                                  <button type="submit" name="category_id" value="{{category.id}}" class="btn btn-primary">
+                                    subscribe
+                                  </button>
+                                  {% endif %}
                                 </form>
-                               {% endif %}
-                                <!-- end of subscribe button -->
-                            {% endfor %}
-                          </ul>
+                                {% endif %}
+                              </li>
+                              <!-- end of subscribe button -->
+                              {% endfor %}
+                            </ul>
+                  </div>
               </div>
-          </div>
-          <!-- Side widget-->        
+              <!-- Side widget-->        
       </div>
   </div>
       </div>
-</ul>
-
-
-
 
 {% endblock %}

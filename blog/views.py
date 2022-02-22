@@ -5,9 +5,8 @@ from .forms import *
 from django.contrib.auth import login
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin , UserPassesTestMixin
 from django.contrib.auth.decorators import user_passes_test, login_required
-from django.contrib.auth.mixins import UserPassesTestMixin
 # to like/unlike post
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
@@ -41,7 +40,6 @@ def home(request):
         "posts": post,
         "nums": nums,
         "categories": all_categories,
-        "user_id": request.user.id,
         "list_of_subs": list_of_subs,
     }
     return render(request, "blog/home.html", context)
@@ -49,7 +47,6 @@ def home(request):
 # Post Details page view
 def postDetails(request, post_id):
     one_post = Post.objects.get(id=post_id)
-    comment = Comment.objects.all()
     total_likes = one_post.total_likes()
     liked = False
     if one_post.likes.filter(id=request.user.id).exists():
@@ -58,7 +55,6 @@ def postDetails(request, post_id):
         "post": one_post,
         "total_likes": total_likes,
         "liked": liked,
-        "tags": ", ".join((row[0] for row in one_post.tags.values_list("name"))),
     }
     return render(request, "blog/post_details.html", context)
 
@@ -159,6 +155,7 @@ class UserLoginView(LoginView):
 @login_required
 def LikeView(request, pk):
     # post_id as the submit button name
+    # post = Post.objects.get(id=pk)
     post = get_object_or_404(Post, id=request.POST.get("post_id"))
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
@@ -172,12 +169,12 @@ def search_bar(request):
         searched = request.POST["searched"]
         posts = Post.objects.filter(
             Q(Title__icontains=searched) | Q(tags__name__in=[searched])
-        )
+        ).distinct()
         return render(
             request, "blog/search_bar.html", {"searched": searched, "posts": posts}
         )
     else:
-        return render(request, "blog/search_bar.html", {})
+        return render(request, "blog/search_bar.html")
 
 
 # subscribe to category view

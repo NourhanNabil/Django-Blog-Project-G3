@@ -1,11 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import (
+    AuthenticationForm,
     UserCreationForm,
     UserChangeForm,
     PasswordChangeForm,
 )
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
 from .models import *
 from django.contrib.auth import authenticate
 
@@ -87,6 +87,10 @@ class UserAdminPromoteForm(forms.Form):
 
 
 class EditProfileForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "last_name", "email")
+
     email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
     first_name = forms.CharField(
         max_length=100, widget=forms.TextInput(attrs={"class": "form-control"})
@@ -99,12 +103,12 @@ class EditProfileForm(UserChangeForm):
     )
     password = None
 
-    class Meta:
-        model = User
-        fields = ("username", "first_name", "last_name", "email")
-
 
 class PasswordChangingForm(PasswordChangeForm):
+    class Meta:
+        model = User
+        fields = ("old_password", "new_password1", "new_password2")
+
     old_password = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control", "type": "password"})
     )
@@ -117,11 +121,7 @@ class PasswordChangingForm(PasswordChangeForm):
         widget=forms.PasswordInput(attrs={"class": "form-control", "type": "password"}),
     )
 
-    class Meta:
-        model = User
-        fields = ("old_password", "new_password1", "new_password2")
-
-
+    
 class ForbiddenWordForm(forms.ModelForm):
     class Meta:
         model = ForbiddenWord
