@@ -16,7 +16,7 @@
   {% endfor %}
   
   
-  {% if post.has_next %}
+  {% if posts.has_next %}
       <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
   
       <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Last &raquo</a></li>
